@@ -328,29 +328,7 @@ class DisplayCountries {
         if(CountryCodes.tryCountryCode(cc) == null) {
           print(error);
         }
-        // var country =  CountryCodes.tryCountryCode(cc);
-        // if(country != null) {
-        //   contrycodes.add(country);
-        // }
-        // else {
-        //   print(res);
-        // }
-      }
-      // countryCodes = CountryCodes.getCountryCodes(arguments.countries);
-      // final countries = buildCountries(
-      //   titleFields: results['fields'], 
-      //   isTitleLowerCase: results['title-lowercase'],
-      //   countryCodes: CountryCodes.getCountryCodes(results.rest),
-      // );
-      // var res = buildOutput(
-      //   countries: countries, 
-      //   isTitleLowerCase: results['title-lowercase'], 
-      //   type: results['type'],          
-      //   showTitle: results['title'],
-      //   horizontalBorder: results['hborder'],
-      //   divideEach: int.tryParse(results['divide-lines']),  
-      //   showLines: results['lines'],
-      // );
+      }     
       print(output);
     } 
     if(arguments.printAll || (arguments.file == null && arguments.countries.isEmpty)) {
