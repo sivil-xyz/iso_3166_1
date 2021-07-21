@@ -8,10 +8,15 @@ import 'package:pretty_json/pretty_json.dart';
 import 'package:tabular/tabular.dart';
 import 'package:csv/csv.dart';
 
+enum DisplayCountriesArgsType { csv, json, list, prettyJson, table }
+enum DisplayCountriesArgsField { id, name, alpha2, alpha3, prefix, flag }
+
 class DisplayCountriesArgs {  
+  static const defaultType = DisplayCountriesArgsType.table;
+
   final List<String> countries;
   final int? divideLines;
-  final List<String> fields;
+  final List<DisplayCountriesArgsField> fields;
   final String? file;
   final int? from;
   final bool hBorder;
@@ -21,23 +26,59 @@ class DisplayCountriesArgs {
   final bool title;
   final bool titleLowercase;
   final int? to;
-  final String type;
+  final DisplayCountriesArgsType type;
 
   DisplayCountriesArgs({
-    required this.countries,
-    required this.divideLines,
-    required this.fields, 
-    required this.file, 
-    required this.from, 
-    required this.hBorder, 
-    required this.limit, 
-    required this.lines, 
-    required this.printAll, 
-    required this.title, 
-    required this.titleLowercase, 
-    required this.to, 
-    required this.type
+    this.countries = const [],
+    this.divideLines,
+    this.fields = DisplayCountriesArgsField.values, 
+    this.file, 
+    this.from, 
+    this.hBorder = true, 
+    this.limit, 
+    this.lines = false, 
+    this.printAll = false, 
+    this.title = true, 
+    this.titleLowercase = false, 
+    this.to, 
+    this.type = defaultType
   });
+
+  static DisplayCountriesArgsType typeOf(String myType) {
+    var res = DisplayCountriesArgsType.table;
+    if(myType.toLowerCase() == 'csv') {
+      res = DisplayCountriesArgsType.csv;
+    }
+    else if(myType.toLowerCase() == 'json') {
+      res = DisplayCountriesArgsType.json;
+    }
+    else if(myType.toLowerCase() == 'pretty_json') {
+      res = DisplayCountriesArgsType.prettyJson;
+    }
+    else if(myType.toLowerCase() == 'list') {
+      res = DisplayCountriesArgsType.list;
+    }
+    return res;
+  }
+  static DisplayCountriesArgsField fieldOf(String myField) {
+    var res = DisplayCountriesArgsField.id;
+    if(myField.toLowerCase() == 'name') {
+      res = DisplayCountriesArgsField.name;
+    }
+    else if(myField.toLowerCase() == 'alpha2') {
+      res = DisplayCountriesArgsField.alpha2;
+    }
+    else if(myField.toLowerCase() == 'alpha3') {
+      res = DisplayCountriesArgsField.alpha3;
+    }
+    else if(myField.toLowerCase() == 'prefix') {
+      res = DisplayCountriesArgsField.prefix;
+    }
+    else if(myField.toLowerCase() == 'flag') {
+      res = DisplayCountriesArgsField.flag;
+    }
+    return res;
+  }
 }
 
 class DisplayCountries {
@@ -57,7 +98,8 @@ class DisplayCountries {
     final arguments = DisplayCountriesArgs(
       countries: results.rest,
       divideLines: int.tryParse(results['divide-lines']),
-      fields: results['fields'],
+      fields: [for(var f in results['fields'] as List<String>) 
+        DisplayCountriesArgs.fieldOf(f)],
       file: results['file'],
       from: int.tryParse(results['from']),
       hBorder: results['h-border'],
@@ -67,7 +109,7 @@ class DisplayCountries {
       title: results['title'],
       titleLowercase: results['title-lowercase'],
       to: int.tryParse(results['to']),
-      type: results['type'],
+      type: DisplayCountriesArgs.typeOf(results['type']),
     );
 
     return DisplayCountries(
@@ -82,8 +124,12 @@ class DisplayCountries {
     parser.addOption(
       'type',
       abbr: 't',
-      defaultsTo: 'table',
-      allowed: ['json','pretty_json', 'table', 'csv', 'JSON', 'TABLE', 'CSV','PRETTY_JSON']
+      defaultsTo: DisplayCountriesArgs.defaultType.toString()
+        .substring(DisplayCountriesArgs.defaultType.toString().indexOf('.') + 1),
+      allowed: [
+        ...DisplayCountriesArgsType.values.map((e) => e.toString().substring(e.toString().indexOf('.') + 1).toLowerCase()),
+        ...DisplayCountriesArgsType.values.map((e) => e.toString().substring(e.toString().indexOf('.') + 1).toUpperCase()),
+      ],
     );
     
     parser.addOption(
@@ -141,8 +187,11 @@ class DisplayCountries {
 
     parser.addMultiOption(
       'fields',
-      defaultsTo: ['ID','NAME', 'ALPHA2', 'ALPHA3', 'PREFIX', 'FLAG'],
-      allowed: ['ID','NAME', 'ALPHA2', 'ALPHA3', 'PREFIX', 'FLAG','id','name', 'alpha2', 'alpha3', 'prefix', 'flag'],
+      defaultsTo: DisplayCountriesArgsField.values.map((e) => e.toString().substring(e.toString().indexOf('.') + 1)),
+      allowed: [
+        ...DisplayCountriesArgsField.values.map((e) => e.toString().substring(e.toString().indexOf('.') + 1).toLowerCase()),
+        ...DisplayCountriesArgsField.values.map((e) => e.toString().substring(e.toString().indexOf('.') + 1).toUpperCase()),
+      ],
     );
 
     return parser.parse(args);
@@ -150,8 +199,8 @@ class DisplayCountries {
 
   List<List<String>> get list {
     final countries = <List<String>>[    
-        arguments.fields.map((e) => 
-          (arguments.titleLowercase)? e.toLowerCase() : e.toUpperCase()).toList()
+        arguments.fields.map((e) => e.toString().substring(e.toString().indexOf('.') + 1))
+          .map((e) => (arguments.titleLowercase)? e.toLowerCase() : e.toUpperCase()).toList()
     ];      
     
     for( var c in countryCodes.getRange(
@@ -224,8 +273,8 @@ class DisplayCountries {
       countries.removeAt(0);
     }
     String output = 'An error has ocurred';
-    
-    if(arguments.type == 'table') {
+
+    if(arguments.type == DisplayCountriesArgsType.table) {
       var rowDividers = [
         if(arguments.title) 1, 
         countries.length, 
@@ -238,21 +287,28 @@ class DisplayCountries {
         align: (arguments.title) ? alignFields : null,
         border: (arguments.hBorder)? Border.horizontal : Border.none,
         rowDividers: rowDividers,
-        format:(arguments.title)
+        format:(arguments.title && 
+            arguments.fields.map((e) => e.toString().toLowerCase()).contains('flag'))
         ? {
           (arguments.titleLowercase)? 'flag':'FLAG' : (val) => ' ' + val + ' ',
         }
         : null
       );
     }
-    else if(arguments.type == 'json'){
+    else if(arguments.type == DisplayCountriesArgsType.json){
       output = json.encode(countries);
     }
-    else if(arguments.type == 'pretty_json') {
+    else if(arguments.type == DisplayCountriesArgsType.prettyJson) {
       output = prettyJson(countries);
     }
-    else if(arguments.type == 'csv'){
+    else if(arguments.type == DisplayCountriesArgsType.csv){
       output = const ListToCsvConverter().convert(countries);
+    }
+    else if(arguments.type == DisplayCountriesArgsType.list){
+      output = '';
+      for(var c in countries) {
+        output += '${c.toString()}\n';
+      }
     }
 
     return output;
