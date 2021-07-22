@@ -208,24 +208,26 @@ class DisplayCountries {
         (arguments.to != null && arguments.to! <= countryCodes.length && arguments.to! > 0)? arguments.to! : countryCodes.length)
         .take(arguments.limit ?? countryCodes.length)) {
       var fields = <String>[];
-      
-      if(countries.first.map((e) => e.toUpperCase()).contains('ID')) {
-        fields.add(c.id);
-      }
-      if(countries.first.map((e) => e.toUpperCase()).contains('NAME')) {
-        fields.add(c.name);
-      }
-      if(countries.first.map((e) => e.toUpperCase()).contains('ALPHA2')) {
-        fields.add(c.alpha2);
-      }
-      if(countries.first.map((e) => e.toUpperCase()).contains('ALPHA3')) {
-        fields.add(c.alpha3);
-      }
-      if(countries.first.map((e) => e.toUpperCase()).contains('PREFIX')) {
-        fields.add(c.prefix);
-      if(countries.first.map((e) => e.toUpperCase()).contains('FLAG')) {
-        fields.add(c.uFlag);
-      }
+
+      for(var field in countries.first) {
+        if(field.toUpperCase().contains('ID')) {
+          fields.add(c.id);
+        }
+        if(field.toUpperCase().contains('NAME')) {
+          fields.add(c.name);
+        }
+        if(field.toUpperCase().contains('ALPHA2')) {
+          fields.add(c.alpha2);
+        }
+        if(field.toUpperCase().contains('ALPHA3')) {
+          fields.add(c.alpha3);
+        }
+        if(field.toUpperCase().contains('PREFIX')) {
+          fields.add(c.prefix);
+        }
+        if(countries.first.map((e) => e.toUpperCase()).contains('FLAG')) {
+          fields.add(c.uFlag);
+        }      
       }
       
       countries.add(fields);
