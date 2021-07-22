@@ -22,6 +22,7 @@ class DisplayCountriesArgs {
   final bool hBorder;
   final int? limit;
   final bool lines;
+  final int linesPosition;
   final bool printAll;
   final bool title;
   final bool titleLowercase;
@@ -37,6 +38,7 @@ class DisplayCountriesArgs {
     this.hBorder = true, 
     this.limit, 
     this.lines = false, 
+    this.linesPosition = 0,
     this.printAll = false, 
     this.title = true, 
     this.titleLowercase = false, 
@@ -105,6 +107,7 @@ class DisplayCountries {
       hBorder: results['h-border'],
       limit: int.tryParse(results['limit']),
       lines: results['lines'],
+      linesPosition: int.tryParse(results['lines-position']) ?? 0,
       printAll: results['print-all'],
       title: results['title'],
       titleLowercase: results['title-lowercase'],
@@ -121,6 +124,39 @@ class DisplayCountries {
 
   static ArgResults setupArgs(List<String> args) {
     var parser = ArgParser();
+    // ADDING OPTIONS
+    parser.addOption(
+      'divide-lines',
+      abbr: 'd',
+      defaultsTo: ''
+    );
+
+    parser.addOption(
+      'file',
+      abbr: 'f',
+    );
+
+    parser.addOption(
+      'from',
+      defaultsTo: ''
+    );
+
+    parser.addOption(
+      'limit',
+      abbr: 'l',
+      defaultsTo: ''
+    );
+
+    parser.addOption(
+      'lines-position',
+      defaultsTo: '0'
+    );
+
+    parser.addOption(
+      'to',
+      defaultsTo: ''
+    );
+
     parser.addOption(
       'type',
       abbr: 't',
@@ -131,40 +167,17 @@ class DisplayCountries {
         ...DisplayCountriesArgsType.values.map((e) => e.toString().substring(e.toString().indexOf('.') + 1).toUpperCase()),
       ],
     );
-    
-    parser.addOption(
-      'from',
-      defaultsTo: ''
-    );
-    parser.addOption(
-      'to',
-      defaultsTo: ''
-    );
-    parser.addOption(
-      'divide-lines',
-      abbr: 'd',
-      defaultsTo: ''
-    );
 
-    parser.addOption(
-      'limit',
-      abbr: 'l',
-      defaultsTo: ''
-    );
-    
-    parser.addOption(
-      'file',
-      abbr: 'f',
+    //ADDING FLAGS
+
+    parser.addFlag(
+      'lines',
+      defaultsTo: false
     );
 
     parser.addFlag(
       'print-all',
       abbr: 'p',
-      defaultsTo: false
-    );
-
-    parser.addFlag(
-      'lines',
       defaultsTo: false
     );
 
@@ -184,6 +197,8 @@ class DisplayCountries {
       'title-lowercase',
       defaultsTo: false
     );
+
+    //ADDING MULTIOPTION
 
     parser.addMultiOption(
       'fields',
@@ -240,9 +255,9 @@ class DisplayCountries {
     final countries = list;
     if(arguments.lines) {
       var i = 1;
-      countries.first.insert(0, '#');
+      countries.first.insert(arguments.linesPosition, '#');
       for(var c in countries.skip(1)) {
-        c.insert(0, '$i');
+        c.insert(arguments.linesPosition, '$i');
         // c.first = '$i: ${c.first}';
         i++;
       }
