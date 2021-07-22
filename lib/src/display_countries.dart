@@ -14,20 +14,20 @@ enum DisplayCountriesArgsField { id, name, alpha2, alpha3, prefix, flag }
 class DisplayCountriesArgs {  
   static const defaultType = DisplayCountriesArgsType.table;
 
-  final List<String> countries;
-  final int? divideLines;
-  final List<DisplayCountriesArgsField> fields;
-  final String? file;
-  final int? from;
-  final bool hBorder;
-  final int? limit;
-  final bool lines;
-  final int linesPosition;
-  final bool printAll;
-  final bool title;
-  final bool titleLowercase;
-  final int? to;
-  final DisplayCountriesArgsType type;
+  List<String> countries;
+  int? divideLines;
+  List<DisplayCountriesArgsField> fields;
+  String? file;
+  int? from;
+  bool hBorder;
+  int? limit;
+  bool lines;
+  int linesPosition;
+  bool printAll;
+  bool title;
+  bool titleLowercase;
+  int? to;
+  DisplayCountriesArgsType type;
 
   DisplayCountriesArgs({
     this.countries = const [],
@@ -114,6 +114,13 @@ class DisplayCountries {
       to: int.tryParse(results['to']),
       type: DisplayCountriesArgs.typeOf(results['type']),
     );
+
+    if(arguments.linesPosition < 0){
+      arguments.linesPosition = 0;
+    }
+    else if(arguments.linesPosition > arguments.fields.length) {
+      arguments.linesPosition = arguments.fields.length;
+    }
 
     return DisplayCountries(
       arguments: arguments, 
@@ -240,7 +247,7 @@ class DisplayCountries {
         if(field.toUpperCase().contains('PREFIX')) {
           fields.add(c.prefix);
         }
-        if(countries.first.map((e) => e.toUpperCase()).contains('FLAG')) {
+        if(field.toUpperCase().contains('FLAG')) {
           fields.add(c.uFlag);
         }      
       }
