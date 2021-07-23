@@ -20,7 +20,7 @@ class DisplayCountriesArgs {
   List<DisplayCountriesArgsField> fields;
   String? file;
   int? from;
-  bool hBorder;
+  bool border;
   bool help;
   int? limit;
   bool lines;
@@ -37,7 +37,7 @@ class DisplayCountriesArgs {
     this.fields = DisplayCountriesArgsField.values, 
     this.file, 
     this.from, 
-    this.hBorder = true, 
+    this.border = true, 
     this.help = false,
     this.limit, 
     this.lines = false, 
@@ -107,8 +107,8 @@ class DisplayCountriesArgs {
           .defaultType.toString().indexOf('.') + 1),
       'help',
       '$help',
-      'h-border',
-      '$hBorder'
+      'border',
+      '$border'
       'lines',
       '$lines',
       'print-all',
@@ -185,12 +185,19 @@ class DisplayCountriesArgs {
             .defaultType.toString().indexOf('.') + 1),
         allowed: [
           ...DisplayCountriesArgsType.values.map(
-              (e) => e.toString().substring(e.toString().indexOf('.') + 1).toLowerCase()),
+              (e) => e.toString().substring(e.toString().indexOf('.') + 1)),
         ],
         help: 'The type of format output',
       );
 
       //ADDING FLAGS
+
+      _parser!.addFlag(
+        'border',
+        defaultsTo: true,
+        negatable: true,
+        help: 'Print an outer border for table',
+      );
 
       _parser!.addFlag(
         'help',
@@ -199,12 +206,6 @@ class DisplayCountriesArgs {
         help: 'Show the help'
       );
 
-      _parser!.addFlag(
-        'h-border',
-        defaultsTo: true,
-        negatable: true,
-        help: 'Print an horizontal border',
-      );
 
       _parser!.addFlag(
         'lines',
@@ -239,7 +240,7 @@ class DisplayCountriesArgs {
         'fields',
         defaultsTo: DisplayCountriesArgsField.values.map((e) => e.toString().substring(e.toString().indexOf('.') + 1)),
         allowed: [
-          ...DisplayCountriesArgsField.values.map((e) => e.toString().substring(e.toString().indexOf('.') + 1).toLowerCase()),
+          ...DisplayCountriesArgsField.values.map((e) => e.toString().substring(e.toString().indexOf('.') + 1)),
         ],
         help: 'Fields (columns) to display in the output'
       );
@@ -275,11 +276,11 @@ class DisplayCountries {
     final arguments = DisplayCountriesArgs(
       countries: results.rest,
       dividingLine: int.tryParse(results['dividing-line']),
+      border: results['border'],
       fields: [for(var f in results['fields'] as List<String>) 
         DisplayCountriesArgs.fieldOf(f)],
       file: results['file'],
       from: int.tryParse(results['from']),
-      hBorder: results['h-border'],
       help: results['help'],
       limit: int.tryParse(results['limit']),
       lines: results['lines'],
@@ -312,8 +313,8 @@ class DisplayCountries {
 
   List<List<String>> get asList {
     final countries = <List<String>>[    
-        arguments.fields.map((e) => e.toString().substring(e.toString().indexOf('.') + 1))
-          .map((e) => (arguments.titleLowercase)? e.toLowerCase() : e.toUpperCase()).toList()
+        arguments.fields.map((e) => e.toString()
+          .substring(e.toString().indexOf('.') + 1)).toList()
     ];      
 
     var cCodes = countryCodes;
@@ -325,22 +326,22 @@ class DisplayCountries {
       var fields = <String>[];
 
       for(var field in countries.first) {
-        if(field.toUpperCase().contains('ID')) {
+        if(field.contains('id')) {
           fields.add(c.id);
         }
-        if(field.toUpperCase().contains('NAME')) {
+        if(field.contains('name')) {
           fields.add(c.name);
         }
-        if(field.toUpperCase().contains('ALPHA2')) {
+        if(field.contains('alpha2')) {
           fields.add(c.alpha2);
         }
-        if(field.toUpperCase().contains('ALPHA3')) {
+        if(field.contains('alpha3')) {
           fields.add(c.alpha3);
         }
-        if(field.toUpperCase().contains('PREFIX')) {
+        if(field.contains('prefix')) {
           fields.add(c.prefix);
         }
-        if(field.toUpperCase().contains('FLAG')) {
+        if(field.contains('flag')) {
           fields.add(c.flagUnicode);
         }      
       }
@@ -363,35 +364,63 @@ class DisplayCountries {
       }
     }
 
-    final alignFields = <dynamic, Side> {};
+    Map<dynamic, Side>? alignFields;
+      Map<dynamic, String Function(dynamic)>? format;
 
-    if(countries.first.map((e) => e.toUpperCase()).contains('#')) {
-      alignFields['#'] = Side.end;
-    }
-    if(countries.first.map((e) => e.toUpperCase()).contains('ID')) {
-      alignFields[(arguments.titleLowercase)? 'id':'ID'] = Side.center;
-    }
-    if(countries.first.map((e) => e.toUpperCase()).contains('ALPHA2')) {
-      alignFields[(arguments.titleLowercase)? 'alpha2':'ALPHA2'] = Side.center;
-    }
-    if(countries.first.map((e) => e.toUpperCase()).contains('ALPHA3')) {
-      alignFields[(arguments.titleLowercase)? 'alpha3':'ALPHA3'] = Side.start;
-    }
-    if(countries.first.map((e) => e.toUpperCase()).contains('PREFIX')) {
-      alignFields[(arguments.titleLowercase)? 'prefix':'PREFIX'] = Side.end;
-    }
-    if(countries.first.map((e) => e.toUpperCase()).contains('FLAG')) {
-      alignFields[(arguments.titleLowercase)? 'flag':'FLAG'] = Side.start;
-    }
+    if(arguments.title && arguments.fields.isNotEmpty) {
+      alignFields = {};
+      format = {};
+      if(countries.first.contains('#')) {
+        alignFields['#'] = Side.end;
+      }
+      if(countries.first.contains('id')) {
+        print('object');
+        alignFields[(arguments.titleLowercase)? 'id':'ID'] = Side.start;
+      }
+      if(countries.first.contains('alpha2')) {
+        alignFields[(arguments.titleLowercase)? 'alpha2':'ALPHA2'] = Side.center;
+      }
+      if(countries.first.contains('alpha3')) {
+        alignFields[(arguments.titleLowercase)? 'alpha3':'ALPHA3'] = Side.start;
+      }
+      if(countries.first.contains('prefix')) {
+        alignFields[(arguments.titleLowercase)? 'prefix':'PREFIX'] = Side.end;
+      }
+      if(countries.first.contains('flag')) {
+        alignFields[(arguments.titleLowercase)? 'flag':'FLAG'] = Side.start;
+      }
 
-    
-      
-    if(!arguments.title) {
+      // var fields = arguments.fields.map((e) => e.toString().toLowerCase()
+      // .substring(e.toString().indexOf('.') + 1)).toList();
+      // if(format != null) {
+        if(countries.first.contains('alpha3')) {
+          format[(arguments.titleLowercase)? 'alpha3':'ALPHA3'] = (val) => ' ' + val + ' ';
+        }
+        if(countries.first.contains('flag')) {
+          format[(arguments.titleLowercase)? 'flag':'FLAG'] = (val) => ' ' + val + ' ';
+        }
+        if(countries.first.contains('id')) {
+          format[(arguments.titleLowercase)? 'id':'ID'] = (val) => ' ' + val + ' ';
+        }
+        if(countries.first.contains('name')) {
+          format[(arguments.titleLowercase)? 'name':'NAME'] = (val) => ' ' + val + ' ';
+        }
+        if(countries.first.contains('prefix')) {
+          format[(arguments.titleLowercase)? 'prefix':'PREFIX'] = (val) => ' ' + val + ' ';
+        }
+      // }
+
+      //at the end of all operations replace the header title
+      countries.first = countries.first.map((e) => 
+        (arguments.titleLowercase)? e.toLowerCase() : e.toUpperCase()).toList();
+    }     
+    else {
       countries.removeAt(0);
     }
     String output = 'An error has ocurred';
 
     if(arguments.type == DisplayCountriesArgsType.table) {
+      
       var rowDividers = [
         if(arguments.title) 1, 
         countries.length, 
@@ -399,32 +428,11 @@ class DisplayCountries {
           if(arguments.dividingLine != null && (i % arguments.dividingLine! == 0)) 
             (arguments.title)? i + 1 : i
       ];
-      var format = (arguments.title && arguments.fields.isNotEmpty)
-        ? <dynamic, String Function(dynamic)> {} 
-        : null;
-      var fields = arguments.fields.map((e) => e.toString().toLowerCase()
-      .substring(e.toString().indexOf('.') + 1)).toList();
-      if(format != null) {
-        if(fields.contains('alpha3')) {
-          format[(arguments.titleLowercase)? 'alpha3':'ALPHA3'] = (val) => ' ' + val + ' ';
-        }
-        if(fields.contains('flag')) {
-          format[(arguments.titleLowercase)? 'flag':'FLAG'] = (val) => ' ' + val + ' ';
-        }
-        if(fields.contains('id')) {
-          format[(arguments.titleLowercase)? 'id':'ID'] = (val) => ' ' + val + ' ';
-        }
-        if(fields.contains('name')) {
-          format[(arguments.titleLowercase)? 'name':'NAME'] = (val) => ' ' + val + ' ';
-        }
-        if(fields.contains('prefix')) {
-          format[(arguments.titleLowercase)? 'prefix':'PREFIX'] = (val) => ' ' + val + ' ';
-        }
-      }
+      
       output = tabular(
         countries, 
-        align: (arguments.title) ? alignFields : null,
-        border: (arguments.hBorder)? Border.all : Border.none,
+        align: alignFields,
+        border: (arguments.border)? Border.all : Border.none,
         rowDividers: rowDividers,
         format: format,
       );
