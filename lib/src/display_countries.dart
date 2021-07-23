@@ -13,13 +13,15 @@ enum DisplayCountriesArgsField { id, name, alpha2, alpha3, prefix, flag }
 
 class DisplayCountriesArgs {  
   static const defaultType = DisplayCountriesArgsType.table;
+  static ArgParser? _parser;
 
   List<String> countries;
-  int? divideLines;
+  int? dividingLine;
   List<DisplayCountriesArgsField> fields;
   String? file;
   int? from;
   bool hBorder;
+  bool help;
   int? limit;
   bool lines;
   int linesPosition;
@@ -31,11 +33,12 @@ class DisplayCountriesArgs {
 
   DisplayCountriesArgs({
     this.countries = const [],
-    this.divideLines,
+    this.dividingLine,
     this.fields = DisplayCountriesArgsField.values, 
     this.file, 
     this.from, 
     this.hBorder = true, 
+    this.help = false,
     this.limit, 
     this.lines = false, 
     this.linesPosition = 0,
@@ -44,7 +47,9 @@ class DisplayCountriesArgs {
     this.titleLowercase = false, 
     this.to, 
     this.type = defaultType
-  });
+  }) {
+    _initParser();
+  }
 
   static DisplayCountriesArgsType typeOf(String myType) {
     var res = DisplayCountriesArgsType.table;
@@ -81,6 +86,166 @@ class DisplayCountriesArgs {
     }
     return res;
   }
+
+  List<String> get asList {
+    return [
+      'dividing-line',
+      '${dividingLine ?? ''}',
+      'file',
+      file ?? '',
+      'from',
+      '${from ?? ''}',
+      'limit',
+      '${limit ?? ''}',
+      'lines-position',
+      '$linesPosition',
+      'to',
+      '${to ?? ''}',
+      'type',
+      type.toString()
+        .substring(DisplayCountriesArgs
+          .defaultType.toString().indexOf('.') + 1),
+      'help',
+      '$help',
+      'h-border',
+      '$hBorder'
+      'lines',
+      '$lines',
+      'print-all',
+      '$printAll',
+      'title',
+      '$title'
+      'title-lowercase',
+      '$titleLowercase'
+      'fields',
+      fields.map((e) => e.toString()
+        .substring(e.toString().indexOf('.') + 1)).join(' ')
+
+    ];
+  }
+
+  static String usage() {
+    _initParser();
+    return _parser!.usage;
+  }
+  static void _initParser() {
+    // initialize the parser class once, is shared by all instances
+    if(_parser == null) {
+      _parser = ArgParser();
+      _parser!.addOption(
+        'dividing-line',
+        abbr: 'd',
+        defaultsTo: '',
+        help: 'Group the output results N times into N times',
+        valueHelp: 'number of times'
+      );
+
+      _parser!.addOption(
+        'file',
+        abbr: 'f',
+        help: 'Save the output to a file',
+        valueHelp: 'path'
+      );
+
+      _parser!.addOption(
+        'from',
+        defaultsTo: '',
+        help: 'show the results starting from this row',
+        valueHelp: 'row number'
+      );
+
+      _parser!.addOption(
+        'limit',
+        abbr: 'l',
+        defaultsTo: '',
+        help: 'limit the results to this number',
+        valueHelp: 'number',
+      );
+
+      _parser!.addOption(
+        'lines-position',
+        defaultsTo: '0',
+        help: 'if lines are show, the position inside the fields(columns)',
+        valueHelp: 'number'
+      );
+
+      _parser!.addOption(
+        'to',
+        defaultsTo: '',
+        help: 'show the results ending into this row',
+        valueHelp: 'row number'
+      );
+
+      _parser!.addOption(
+        'type',
+        abbr: 't',
+        defaultsTo: DisplayCountriesArgs
+            .defaultType.toString()
+          .substring(DisplayCountriesArgs
+            .defaultType.toString().indexOf('.') + 1),
+        allowed: [
+          ...DisplayCountriesArgsType.values.map(
+              (e) => e.toString().substring(e.toString().indexOf('.') + 1).toLowerCase()),
+        ],
+        help: 'The type of format output',
+      );
+
+      //ADDING FLAGS
+
+      _parser!.addFlag(
+        'help',
+        abbr: 'h',
+        defaultsTo: false,
+        help: 'Show the help'
+      );
+
+      _parser!.addFlag(
+        'h-border',
+        defaultsTo: true,
+        negatable: true,
+        help: 'Print an horizontal border',
+      );
+
+      _parser!.addFlag(
+        'lines',
+        defaultsTo: false,
+        help: 'Show the lines in the output'
+      );
+
+      _parser!.addFlag(
+        'print-all',
+        abbr: 'p',
+        defaultsTo: false,
+        help: 'Show all the results even if there is any lookup'
+      );
+
+
+      _parser!.addFlag(
+        'title',
+        defaultsTo: true,
+        negatable: true,
+        help: 'Show a title (heading). Show the field names in each column'
+      );
+
+      _parser!.addFlag(
+        'title-lowercase',
+        defaultsTo: false,
+        help: 'Put the title in lowercase'
+      );
+
+      //ADDING MULTIOPTION
+
+      _parser!.addMultiOption(
+        'fields',
+        defaultsTo: DisplayCountriesArgsField.values.map((e) => e.toString().substring(e.toString().indexOf('.') + 1)),
+        allowed: [
+          ...DisplayCountriesArgsField.values.map((e) => e.toString().substring(e.toString().indexOf('.') + 1).toLowerCase()),
+        ],
+        help: 'Fields (columns) to display in the output'
+      );
+      // ADDING OPTIONS
+    }
+  }
 }
 
 class DisplayCountries {
@@ -95,16 +260,29 @@ class DisplayCountries {
   factory DisplayCountries.fromArguments(List<String> args, {    
     List<CountryCode>? countryCodes
   }) 
-  {
-    final results = setupArgs(args);
+  {    
+    ArgResults? results;
+    try {
+      DisplayCountriesArgs._initParser();
+      results = DisplayCountriesArgs._parser!.parse(args);
+    }
+    catch(e) {
+      results = null;
+    }
+
+    if(results == null) {
+      print('Error: uknown flag or option');
+      exit(0);
+    }
     final arguments = DisplayCountriesArgs(
       countries: results.rest,
-      divideLines: int.tryParse(results['divide-lines']),
+      dividingLine: int.tryParse(results['dividing-line']),
       fields: [for(var f in results['fields'] as List<String>) 
         DisplayCountriesArgs.fieldOf(f)],
       file: results['file'],
       from: int.tryParse(results['from']),
       hBorder: results['h-border'],
+      help: results['help'],
       limit: int.tryParse(results['limit']),
       lines: results['lines'],
       linesPosition: int.tryParse(results['lines-position']) ?? 0,
@@ -129,97 +307,7 @@ class DisplayCountries {
         
   }
 
-  static ArgResults setupArgs(List<String> args) {
-    var parser = ArgParser();
-    // ADDING OPTIONS
-    parser.addOption(
-      'divide-lines',
-      abbr: 'd',
-      defaultsTo: ''
-    );
-
-    parser.addOption(
-      'file',
-      abbr: 'f',
-    );
-
-    parser.addOption(
-      'from',
-      defaultsTo: ''
-    );
-
-    parser.addOption(
-      'limit',
-      abbr: 'l',
-      defaultsTo: ''
-    );
-
-    parser.addOption(
-      'lines-position',
-      defaultsTo: '0'
-    );
-
-    parser.addOption(
-      'to',
-      defaultsTo: ''
-    );
-
-    parser.addOption(
-      'type',
-      abbr: 't',
-      defaultsTo: DisplayCountriesArgs.defaultType.toString()
-        .substring(DisplayCountriesArgs.defaultType.toString().indexOf('.') + 1),
-      allowed: [
-        ...DisplayCountriesArgsType.values.map((e) => e.toString().substring(e.toString().indexOf('.') + 1).toLowerCase()),
-        ...DisplayCountriesArgsType.values.map((e) => e.toString().substring(e.toString().indexOf('.') + 1).toUpperCase()),
-      ],
-    );
-
-    //ADDING FLAGS
-
-    parser.addFlag(
-      'lines',
-      defaultsTo: false
-    );
-
-    parser.addFlag(
-      'print-all',
-      abbr: 'p',
-      defaultsTo: false
-    );
-
-    parser.addFlag(
-      'h-border',
-      defaultsTo: true,
-      negatable: true
-    );
-
-    parser.addFlag(
-      'title',
-      defaultsTo: true,
-      negatable: true
-    );
-
-    parser.addFlag(
-      'title-lowercase',
-      defaultsTo: false
-    );
-
-    //ADDING MULTIOPTION
-
-    parser.addMultiOption(
-      'fields',
-      defaultsTo: DisplayCountriesArgsField.values.map((e) => e.toString().substring(e.toString().indexOf('.') + 1)),
-      allowed: [
-        ...DisplayCountriesArgsField.values.map((e) => e.toString().substring(e.toString().indexOf('.') + 1).toLowerCase()),
-        ...DisplayCountriesArgsField.values.map((e) => e.toString().substring(e.toString().indexOf('.') + 1).toUpperCase()),
-      ],
-    );
-
-    return parser.parse(args);
-  }
-
-  List<List<String>> get list {
+  List<List<String>> get asList {
     final countries = <List<String>>[    
         arguments.fields.map((e) => e.toString().substring(e.toString().indexOf('.') + 1))
           .map((e) => (arguments.titleLowercase)? e.toLowerCase() : e.toUpperCase()).toList()
@@ -258,8 +346,8 @@ class DisplayCountries {
     return countries;
   }
 
-  String get output {  
-    final countries = list;
+  String get asString {  
+    final countries = asList;
     if(arguments.lines) {
       var i = 1;
       countries.first.insert(arguments.linesPosition, '#');
@@ -303,7 +391,7 @@ class DisplayCountries {
         if(arguments.title) 1, 
         countries.length, 
         for(var i=2; i < countries.length; i++) 
-          if(arguments.divideLines != null && (i % arguments.divideLines! == 0)) 
+          if(arguments.dividingLine != null && (i % arguments.dividingLine! == 0)) 
             (arguments.title)? i + 1 : i
       ];
       output = tabular(
@@ -338,26 +426,29 @@ class DisplayCountries {
     return output;
   }
  
-  void run() {   
+  void run() { 
+    if(arguments.help){
+      print(DisplayCountriesArgs._parser!.usage);
+    }
 
     if(arguments.file != null && arguments.file != '') {
       var file = File(arguments.file!);
-      file.writeAsStringSync(output);
+      file.writeAsStringSync(asString);
     }
 
     if(arguments.countries.isNotEmpty) {
-      // var contrycodes = <CountryCode>[];
       for(var cc in arguments.countries) {
         var error = '[${cc.toUpperCase()}] could not be found';
         if(CountryCodes.tryCountryCode(cc) == null) {
           print(error);
         }
       }     
-      print(output);
+      print(asString);
     } 
-    if(arguments.printAll || (arguments.file == null && arguments.countries.isEmpty)) {
+    if(arguments.printAll || (arguments.file == null && 
+        arguments.countries.isEmpty && !arguments.help)) {
       countryCodes = CountryCodes.values;   
-      print(output);
+      print(asString);
     }
   }
 }
