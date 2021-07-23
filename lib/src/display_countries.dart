@@ -250,11 +250,9 @@ class DisplayCountriesArgs {
 
 class DisplayCountries {
   DisplayCountriesArgs arguments;
-  List<CountryCode> countryCodes;
 
   DisplayCountries({
     required this.arguments, 
-    required this.countryCodes
   });
 
   factory DisplayCountries.fromArguments(List<String> args, {    
@@ -301,10 +299,15 @@ class DisplayCountries {
     }
 
     return DisplayCountries(
-      arguments: arguments, 
-      countryCodes: countryCodes ?? CountryCodes.getCountryCodes(arguments.countries),
+      arguments: arguments,       
     );
         
+  }
+
+  List<CountryCode> get countryCodes {
+    return (arguments.countries.isNotEmpty)
+    ? CountryCodes.getCountryCodes(arguments.countries)
+    : CountryCodes.values;
   }
 
   List<List<String>> get asList {
@@ -312,11 +315,13 @@ class DisplayCountries {
         arguments.fields.map((e) => e.toString().substring(e.toString().indexOf('.') + 1))
           .map((e) => (arguments.titleLowercase)? e.toLowerCase() : e.toUpperCase()).toList()
     ];      
+
+    var cCodes = countryCodes;
     
-    for( var c in countryCodes.getRange(
-        (arguments.from != null && arguments.from! > 0 && arguments.from! <= countryCodes.length)? arguments.from!-1 : 0, 
-        (arguments.to != null && arguments.to! <= countryCodes.length && arguments.to! > 0)? arguments.to! : countryCodes.length)
-        .take(arguments.limit ?? countryCodes.length)) {
+    for( var c in cCodes.getRange(
+        (arguments.from != null && arguments.from! > 0 && arguments.from! <= cCodes.length)? arguments.from!-1 : 0, 
+        (arguments.to != null && arguments.to! <= cCodes.length && arguments.to! > 0)? arguments.to! : cCodes.length)
+        .take(arguments.limit ?? cCodes.length)) {
       var fields = <String>[];
 
       for(var field in countries.first) {
@@ -447,7 +452,6 @@ class DisplayCountries {
     } 
     if(arguments.printAll || (arguments.file == null && 
         arguments.countries.isEmpty && !arguments.help)) {
-      countryCodes = CountryCodes.values;   
       print(asString);
     }
   }
