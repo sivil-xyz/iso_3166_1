@@ -75,6 +75,8 @@ class CountryCode {
     return id == o.id;
   }
 
+  String get flagUnicode => uFlag.runes.map((e) => '\\u{${e.toRadixString(16)}}').join('');
+
   Map<String, dynamic> toMap() {
     return {
       'alpha2' : alpha2,

@@ -341,7 +341,7 @@ class DisplayCountries {
           fields.add(c.prefix);
         }
         if(field.toUpperCase().contains('FLAG')) {
-          fields.add(c.uFlag);
+          fields.add(c.flagUnicode);
         }      
       }
       
@@ -369,13 +369,13 @@ class DisplayCountries {
       alignFields['#'] = Side.end;
     }
     if(countries.first.map((e) => e.toUpperCase()).contains('ID')) {
-      alignFields[(arguments.titleLowercase)? 'id':'ID'] = Side.end;
+      alignFields[(arguments.titleLowercase)? 'id':'ID'] = Side.center;
     }
     if(countries.first.map((e) => e.toUpperCase()).contains('ALPHA2')) {
       alignFields[(arguments.titleLowercase)? 'alpha2':'ALPHA2'] = Side.center;
     }
     if(countries.first.map((e) => e.toUpperCase()).contains('ALPHA3')) {
-      alignFields[(arguments.titleLowercase)? 'alpha3':'ALPHA3'] = Side.center;
+      alignFields[(arguments.titleLowercase)? 'alpha3':'ALPHA3'] = Side.start;
     }
     if(countries.first.map((e) => e.toUpperCase()).contains('PREFIX')) {
       alignFields[(arguments.titleLowercase)? 'prefix':'PREFIX'] = Side.end;
@@ -399,17 +399,34 @@ class DisplayCountries {
           if(arguments.dividingLine != null && (i % arguments.dividingLine! == 0)) 
             (arguments.title)? i + 1 : i
       ];
+      var format = (arguments.title && arguments.fields.isNotEmpty)
+        ? <dynamic, String Function(dynamic)> {} 
+        : null;
+      var fields = arguments.fields.map((e) => e.toString().toLowerCase()
+      .substring(e.toString().indexOf('.') + 1)).toList();
+      if(format != null) {
+        if(fields.contains('alpha3')) {
+          format[(arguments.titleLowercase)? 'alpha3':'ALPHA3'] = (val) => ' ' + val + ' ';
+        }
+        if(fields.contains('flag')) {
+          format[(arguments.titleLowercase)? 'flag':'FLAG'] = (val) => ' ' + val + ' ';
+        }
+        if(fields.contains('id')) {
+          format[(arguments.titleLowercase)? 'id':'ID'] = (val) => ' ' + val + ' ';
+        }
+        if(fields.contains('name')) {
+          format[(arguments.titleLowercase)? 'name':'NAME'] = (val) => ' ' + val + ' ';
+        }
+        if(fields.contains('prefix')) {
+          format[(arguments.titleLowercase)? 'prefix':'PREFIX'] = (val) => ' ' + val + ' ';
+        }
+      }
       output = tabular(
         countries, 
         align: (arguments.title) ? alignFields : null,
-        border: (arguments.hBorder)? Border.horizontal : Border.none,
+        border: (arguments.hBorder)? Border.all : Border.none,
         rowDividers: rowDividers,
-        format:(arguments.title && 
-            arguments.fields.map((e) => e.toString().toLowerCase()).contains('flag'))
-        ? {
-          (arguments.titleLowercase)? 'flag':'FLAG' : (val) => ' ' + val + ' ',
-        }
-        : null
+        format: format,
       );
     }
     else if(arguments.type == DisplayCountriesArgsType.json){
