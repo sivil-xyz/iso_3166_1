@@ -11,3 +11,4 @@ pubspec.lock
 
 # txt generating files
 *.txt
+.vscode/launch.json

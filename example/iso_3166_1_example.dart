@@ -15,4 +15,6 @@ void main() {
 
   //try to get a country from whatever id, return null if it does not exist
   print(CountryCodes.tryCountryCode('es')?.toMap());
+
+  print(CountryCodes.getCountryCodes(['es','de','uk','unknown']).map((e) => e.toMap()));
 }
