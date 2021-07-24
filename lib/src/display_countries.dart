@@ -374,7 +374,6 @@ class DisplayCountries {
         alignFields['#'] = Side.end;
       }
       if(countries.first.contains('id')) {
-        print('object');
         alignFields[(arguments.titleLowercase)? 'id':'ID'] = Side.start;
       }
       if(countries.first.contains('alpha2')) {
@@ -425,7 +424,8 @@ class DisplayCountries {
         if(arguments.title) 1, 
         countries.length, 
         for(var i=2; i < countries.length; i++) 
-          if(arguments.dividingLine != null && (i % arguments.dividingLine! == 0)) 
+          if((arguments.dividingLine != null && arguments.dividingLine! > 0) && 
+              (i % arguments.dividingLine! == 0)) 
             (arguments.title)? i + 1 : i
       ];
       
