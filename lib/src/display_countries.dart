@@ -464,6 +464,7 @@ class DisplayCountries {
     if(arguments.file != null && arguments.file != '') {
       var file = File(arguments.file!);
       file.writeAsStringSync(asString);
+      print('$file saved successfully');
     }
 
     if(arguments.countries.isNotEmpty) {
