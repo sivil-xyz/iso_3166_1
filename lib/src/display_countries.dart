@@ -478,6 +478,7 @@ class DisplayCountries {
     } 
     if(arguments.printAll || (arguments.file == null && 
         arguments.countries.isEmpty && !arguments.help)) {
+      arguments.countries = [];
       print(asString);
     }
   }
