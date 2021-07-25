@@ -8,8 +8,9 @@ import 'package:pretty_json/pretty_json.dart';
 import 'package:tabular/tabular.dart';
 import 'package:csv/csv.dart';
 
-enum DisplayCountriesArgsType { csv, json, list, prettyJson, table }
 enum DisplayCountriesArgsField { id, name, alpha2, alpha3, prefix, flag }
+enum DisplayCountriesArgsOrder { asc, desc, ascending, descending }
+enum DisplayCountriesArgsType { csv, json, list, prettyJson, table }
 
 class DisplayCountriesArgs {  
   static const defaultType = DisplayCountriesArgsType.table;
@@ -25,6 +26,8 @@ class DisplayCountriesArgs {
   int? limit;
   bool lines;
   int linesPosition;
+  DisplayCountriesArgsOrder orderAfter;
+  DisplayCountriesArgsOrder orderBefore;
   bool printAll;
   bool title;
   bool titleLowercase;
@@ -42,6 +45,8 @@ class DisplayCountriesArgs {
     this.limit, 
     this.lines = false, 
     this.linesPosition = 0,
+    this.orderAfter = DisplayCountriesArgsOrder.asc,
+    this.orderBefore = DisplayCountriesArgsOrder.asc,
     this.printAll = false, 
     this.title = true, 
     this.titleLowercase = false, 
@@ -67,6 +72,7 @@ class DisplayCountriesArgs {
     }
     return res;
   }
+
   static DisplayCountriesArgsField fieldOf(String myField) {
     var res = DisplayCountriesArgsField.id;
     if(myField.toLowerCase() == 'name') {
@@ -87,6 +93,20 @@ class DisplayCountriesArgs {
     return res;
   }
 
+  static DisplayCountriesArgsOrder orderOf(String myField) {
+    var res = DisplayCountriesArgsOrder.asc;
+    if(myField.toLowerCase() == 'ascending') {
+      res = DisplayCountriesArgsOrder.ascending;
+    }
+    else if(myField.toLowerCase() == 'desc') {
+      res = DisplayCountriesArgsOrder.desc;
+    }
+    else if(myField.toLowerCase() == 'descending') {
+      res = DisplayCountriesArgsOrder.descending;
+    }
+    return res;
+  }
+
   List<String> get asList {
     return [
       'dividing-line',
@@ -99,6 +119,10 @@ class DisplayCountriesArgs {
       '${limit ?? ''}',
       'lines-position',
       '$linesPosition',
+      'sort-after',
+      '$orderAfter',
+      'sort-before',
+      '$orderBefore',
       'to',
       '${to ?? ''}',
       'type',
@@ -170,6 +194,22 @@ class DisplayCountriesArgs {
       );
 
       _parser!.addOption(
+        'sort-before',
+        defaultsTo: 'asc',
+        help: 'sort before applying the filter',
+        allowed: DisplayCountriesArgsOrder.values.map(
+              (e) => e.toString().substring(e.toString().indexOf('.') + 1)),
+      );
+
+      _parser!.addOption(
+        'sort-after',
+        defaultsTo: 'asc',
+        help: 'sort after applying the filter',
+        allowed: DisplayCountriesArgsOrder.values.map(
+              (e) => e.toString().substring(e.toString().indexOf('.') + 1)),
+      );
+
+      _parser!.addOption(
         'to',
         defaultsTo: '',
         help: 'show the results ending into this row',
@@ -195,7 +235,6 @@ class DisplayCountriesArgs {
       _parser!.addFlag(
         'border',
         defaultsTo: true,
-        negatable: true,
         help: 'Print an outer border for table',
       );
 
@@ -203,6 +242,7 @@ class DisplayCountriesArgs {
         'help',
         abbr: 'h',
         defaultsTo: false,
+        negatable: false,
         help: 'Show the help'
       );
 
@@ -210,6 +250,7 @@ class DisplayCountriesArgs {
       _parser!.addFlag(
         'lines',
         defaultsTo: false,
+        negatable: false,
         help: 'Show the lines in the output'
       );
 
@@ -217,20 +258,20 @@ class DisplayCountriesArgs {
         'print-all',
         abbr: 'p',
         defaultsTo: false,
-        help: 'Show all the results even if there is any lookup'
+        help: 'Show all the results even if there is any search in progress',
+        negatable: false,
       );
-
 
       _parser!.addFlag(
         'title',
         defaultsTo: true,
-        negatable: true,
         help: 'Show a title (heading). Show the field names in each column'
       );
 
       _parser!.addFlag(
         'title-lowercase',
         defaultsTo: false,
+        negatable: false,
         help: 'Put the title in lowercase'
       );
 
@@ -242,7 +283,8 @@ class DisplayCountriesArgs {
         allowed: [
           ...DisplayCountriesArgsField.values.map((e) => e.toString().substring(e.toString().indexOf('.') + 1)),
         ],
-        help: 'Fields (columns) to display in the output'
+        help: 'Fields (columns) to display in the output',
+        valueHelp: 'field1,field2,...'
       );
       // ADDING OPTIONS
     }
@@ -285,6 +327,8 @@ class DisplayCountries {
       limit: int.tryParse(results['limit']),
       lines: results['lines'],
       linesPosition: int.tryParse(results['lines-position']) ?? 0,
+      orderAfter: DisplayCountriesArgs.orderOf(results['sort-after']),
+      orderBefore: DisplayCountriesArgs.orderOf(results['sort-before']),
       printAll: results['print-all'],
       title: results['title'],
       titleLowercase: results['title-lowercase'],
@@ -306,9 +350,23 @@ class DisplayCountries {
   }
 
   List<CountryCode> get countryCodes {
-    return (arguments.countries.isNotEmpty)
+    var cCodes = (arguments.countries.isNotEmpty)
     ? CountryCodes.getCountryCodes(arguments.countries)
     : CountryCodes.values;
+    print(arguments.orderAfter);
+    if(arguments.orderBefore == DisplayCountriesArgsOrder.desc || 
+        arguments.orderBefore == DisplayCountriesArgsOrder.descending) {
+      cCodes = cCodes.reversed.toList();
+    }
+    cCodes =  cCodes.getRange(
+        (arguments.from != null && arguments.from! > 0 && arguments.from! <= cCodes.length)? arguments.from!-1 : 0, 
+        (arguments.to != null && arguments.to! <= cCodes.length && arguments.to! > 0)? arguments.to! : cCodes.length)
+        .take(arguments.limit ?? cCodes.length).toList();
+    if(arguments.orderAfter == DisplayCountriesArgsOrder.desc || 
+        arguments.orderAfter == DisplayCountriesArgsOrder.descending) {
+      cCodes = cCodes.reversed.toList();
+    }
+    return cCodes;
   }
 
   List<List<String>> get asList {
@@ -317,12 +375,9 @@ class DisplayCountries {
           .substring(e.toString().indexOf('.') + 1)).toList()
     ];      
 
-    var cCodes = countryCodes;
+    // var cCodes = countryCodes;
     
-    for( var c in cCodes.getRange(
-        (arguments.from != null && arguments.from! > 0 && arguments.from! <= cCodes.length)? arguments.from!-1 : 0, 
-        (arguments.to != null && arguments.to! <= cCodes.length && arguments.to! > 0)? arguments.to! : cCodes.length)
-        .take(arguments.limit ?? cCodes.length)) {
+    for( var c in countryCodes) {
       var fields = <String>[];
 
       for(var field in countries.first) {
