@@ -2785,7 +2785,7 @@ class CountryCodes {
     CountryCode? countryCode;
     if(countryCode == null && scopes.contains(CountryCodeScope.id)) {
       for(var cc in values) {
-        if(cc.id.toLowerCase() == key) {
+        if(int.tryParse(cc.id.toLowerCase()) == int.tryParse(key)) {
           countryCode = cc;
         }
       }
