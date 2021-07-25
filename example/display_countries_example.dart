@@ -1,4 +1,5 @@
 import 'package:iso_3166_1/iso_3166_1.dart';
+import 'package:iso_3166_1/src/display_countries.dart';
 
 void main() {
   // for printing countries with its defualt arguments
@@ -25,7 +26,7 @@ void main() {
   // displayCountries.arguments.help = true;
 
   // lookup for this countries based on their id, name, alphas
-  // displayCountries.arguments.countries = ['es', 'unknown' 'de', 'uk'];
+  displayCountries.arguments.countries = ['es', 'unknown' 'de', 'uk'];
   // displayCountries.arguments = DisplayCountriesArgs(countries:  ['es', 'unknown','de', 'uk'] );
 
   // divides the results with a line every 5 times
@@ -46,16 +47,31 @@ void main() {
   // displayCountries.arguments.border = false;
   // displayCountries.arguments.dividingLine = 0;
 
-  //save this output to a file, 
+  // save this output to a file, 
   // if you want to print the countires to the console use --printAll
   // while you are using other options
   // displayCountries.arguments.file = 'p.txt';
-  // displayCountries.arguments.printAll = true;
+  displayCountries.arguments.printAll = true;
+
+  // print a range of results
+  // if range is less than 0, the start index will be set to 0
+  // if range is greater than the end index will be set to length
+  displayCountries.arguments.from = 15;
+  displayCountries.arguments.to = 30;
+
+  // show the lines, by default the first column
+  displayCountries.arguments.lines = true;
+
+  // do not show the title header
+  displayCountries.arguments.title = false;
+
+  //show the title in lowercase
+  displayCountries.arguments.titleLowercase = true;
 
   //
+  displayCountries.arguments.type = DisplayCountriesArgsType.csv;
 
 
-  //
   displayCountries.run();
 
 
