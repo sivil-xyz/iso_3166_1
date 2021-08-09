@@ -11,7 +11,7 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages). 
 -->
 
-TODO: An implementation of ISO_3166_1 in a similar way to an enum, 
+An implementation of ISO_3166_1 in a similar way to an enum, 
   group by id, name, alpha2 and alpha3. 
   It provides id, alpha2, alpha3, flag and prefix number info
   It is able to search a country its id,name, alpha2, alpha3, returns null
@@ -20,7 +20,6 @@ TODO: An implementation of ISO_3166_1 in a similar way to an enum,
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
 * It allows to get country information like id, name, alpha2, alpha3, international prefix number, flag emoji unicode
 * It allows to create some CLI tools to display country information thanks to the DisplayCountries class by using CLI arguments
 * It provides list_country tool that receive arguments passed by CLI to display countries
@@ -107,6 +106,44 @@ print(
 );
 
 ```
+
+## Usage of DisplayCountries class
+This class is used for the list_countries tool.
+
+Examples are under example/lib.
+
+You can use this to extend the class or to create your own CLI tool.
+
+## Usage as a tool, under bin directory
+The following is for using as a command-line tool, more examples under example/bin folder
+
+There are two ways to run the tool:
+
+1) From a package that depends on this package and it is listed in .packages file
+    ```console
+      dart run iso_3166_1:list_countries [options/flags] [searched countries are separated by space]
+    ```
+
+2) To download and upgrade a package to the pub cache and create links to the tools
+    ```console
+      pub global activate iso_3166_1
+
+  * Then you can choose between these to run the tool
+    ```console
+      pub global run list_countries
+      list_countries
+    ```
+    #### EXAMPLES
+
+    It shows the help, options, allowed and default values
+      ```console
+        list_countries -h
+      ```
+
+    It searchs, show and save to a file certian countries
+      ```console
+        list_countries -p -f myFile.txt italy esp pt 20 unknown
+  ```
 
 ## Additional information
 
