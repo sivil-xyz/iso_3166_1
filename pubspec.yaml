@@ -11,12 +11,12 @@ environment:
 
 dev_dependencies:
   lints: ^1.0.0
-  test: ^1.16.0   
+  test: ^1.16.0     
+dependencies:
   args: ^2.2.0
   characters: ^1.1.0
   tabular: ^0.6.3
   csv: ^5.0.0
   pretty_json: ^2.0.0
-dependencies:
 executables:
   list_countries:
