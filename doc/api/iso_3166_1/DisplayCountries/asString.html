@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the asString property from the DisplayCountries class, for the Dart programming language.">
+  <title>asString property - DisplayCountries class - iso_3166_1 library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">iso_3166_1</a></li>
+    <li><a href="../../iso_3166_1/iso_3166_1-library.html">iso_3166_1</a></li>
+    <li><a href="../../iso_3166_1/DisplayCountries-class.html">DisplayCountries</a></li>
+    <li class="self-crumb">asString property</li>
+  </ol>
+  <div class="self-name">asString</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-property">asString</span> property 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+</h1></div>
+
+
+        
+<section id="getter">
+
+<section class="multi-line-signature">
+  <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  <span class="name ">asString</span>
+  
+
+</section>
+
+
+
+
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">String get asString {
+  final countries = asList;
+  if(arguments.lines) {
+    var i = 1;
+    countries.first.insert(arguments.linesPosition, &#39;#&#39;);
+    for(var c in countries.skip(1)) {
+      c.insert(arguments.linesPosition, &#39;$i&#39;);
+      &#47;&#47; c.first = &#39;$i: ${c.first}&#39;;
+      i++;
+    }
+  }
+
+  Map&lt;dynamic, Side&gt;? alignFields;
+    Map&lt;dynamic, String Function(dynamic)&gt;? format;
+
+  if(arguments.title &amp;&amp; arguments.fields.isNotEmpty) {
+    alignFields = {};
+    format = {};
+    if(countries.first.contains(&#39;#&#39;)) {
+      alignFields[&#39;#&#39;] = Side.end;
+    }
+    if(countries.first.contains(&#39;id&#39;)) {
+      alignFields[(arguments.titleLowercase)? &#39;id&#39;:&#39;ID&#39;] = Side.start;
+    }
+    if(countries.first.contains(&#39;alpha2&#39;)) {
+      alignFields[(arguments.titleLowercase)? &#39;alpha2&#39;:&#39;ALPHA2&#39;] = Side.center;
+    }
+    if(countries.first.contains(&#39;alpha3&#39;)) {
+      alignFields[(arguments.titleLowercase)? &#39;alpha3&#39;:&#39;ALPHA3&#39;] = Side.start;
+    }
+    if(countries.first.contains(&#39;prefix&#39;)) {
+      alignFields[(arguments.titleLowercase)? &#39;prefix&#39;:&#39;PREFIX&#39;] = Side.end;
+    }
+    if(countries.first.contains(&#39;flag&#39;)) {
+      alignFields[(arguments.titleLowercase)? &#39;flag&#39;:&#39;FLAG&#39;] = Side.start;
+    }
+
+    &#47;&#47; var fields = arguments.fields.map((e) =&gt; e.toString().toLowerCase()
+    &#47;&#47; .substring(e.toString().indexOf(&#39;.&#39;) + 1)).toList();
+    &#47;&#47; if(format != null) {
+      if(countries.first.contains(&#39;alpha3&#39;)) {
+        format[(arguments.titleLowercase)? &#39;alpha3&#39;:&#39;ALPHA3&#39;] = (val) =&gt; &#39; &#39; + val + &#39; &#39;;
+      }
+      if(countries.first.contains(&#39;flag&#39;)) {
+        format[(arguments.titleLowercase)? &#39;flag&#39;:&#39;FLAG&#39;] = (val) =&gt; &#39; &#39; + val + &#39; &#39;;
+      }
+      if(countries.first.contains(&#39;id&#39;)) {
+        format[(arguments.titleLowercase)? &#39;id&#39;:&#39;ID&#39;] = (val) =&gt; &#39; &#39; + val + &#39; &#39;;
+      }
+      if(countries.first.contains(&#39;name&#39;)) {
+        format[(arguments.titleLowercase)? &#39;name&#39;:&#39;NAME&#39;] = (val) =&gt; &#39; &#39; + val + &#39; &#39;;
+      }
+      if(countries.first.contains(&#39;prefix&#39;)) {
+        format[(arguments.titleLowercase)? &#39;prefix&#39;:&#39;PREFIX&#39;] = (val) =&gt; &#39; &#39; + val + &#39; &#39;;
+      }
+    &#47;&#47; }
+
+    &#47;&#47;at the end of all operations replace the header title
+    countries.first = countries.first.map((e) =&gt;
+      (arguments.titleLowercase)? e.toLowerCase() : e.toUpperCase()).toList();
+  }
+  else {
+    countries.removeAt(0);
+  }
+  String output = &#39;An error has ocurred&#39;;
+
+  if(arguments.type == EnumDisplayCountriesArgsType.table) {
+
+    var rowDividers = [
+      if(arguments.title) 1,
+      countries.length,
+      for(var i=2; i &lt; countries.length; i++)
+        if((arguments.dividingLine != null &amp;&amp; arguments.dividingLine! &gt; 0) &amp;&amp;
+            (i % arguments.dividingLine! == 0))
+          (arguments.title)? i + 1 : i
+    ];
+
+    output = tabular(
+      countries,
+      align: alignFields,
+      border: (arguments.border)? Border.all : Border.none,
+      rowDividers: rowDividers,
+      format: format,
+    );
+  }
+  else if(arguments.type == EnumDisplayCountriesArgsType.json){
+    output = json.encode(countries);
+  }
+  else if(arguments.type == EnumDisplayCountriesArgsType.prettyJson) {
+    output = prettyJson(countries);
+  }
+  else if(arguments.type == EnumDisplayCountriesArgsType.csv){
+    output = const ListToCsvConverter().convert(countries);
+  }
+  else if(arguments.type == EnumDisplayCountriesArgsType.list){
+    output = &#39;&#39;;
+    for(var c in countries) {
+      output += &#39;${c.toString()}\n&#39;;
+    }
+  }
+
+  return output;
+}</code></pre>
+</section>
+
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../../index.html">iso_3166_1</a></li>
+  <li><a href="../../iso_3166_1/iso_3166_1-library.html">iso_3166_1</a></li>
+  <li><a href="../../iso_3166_1/DisplayCountries-class.html">DisplayCountries</a></li>
+  <li class="self-crumb">asString property</li>
+</ol>
+
+
+    <h5>DisplayCountries class</h5>
+    <ol>
+
+    <li class="section-title"><a href="../../iso_3166_1/DisplayCountries-class.html#constructors">Constructors</a></li>
+    <li><a href="../../iso_3166_1/DisplayCountries/DisplayCountries.html">DisplayCountries</a></li>
+    <li><a href="../../iso_3166_1/DisplayCountries/DisplayCountries.fromArguments.html">fromArguments</a></li>
+
+
+    <li class="section-title">
+      <a href="../../iso_3166_1/DisplayCountries-class.html#instance-properties">Properties</a>
+    </li>
+    <li><a href="../../iso_3166_1/DisplayCountries/arguments.html">arguments</a></li>
+    <li><a href="../../iso_3166_1/DisplayCountries/asList.html">asList</a></li>
+    <li><a href="../../iso_3166_1/DisplayCountries/asString.html">asString</a></li>
+    <li><a href="../../iso_3166_1/DisplayCountries/countryCodes.html">countryCodes</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+
+    <li class="section-title"><a href="../../iso_3166_1/DisplayCountries-class.html#instance-methods">Methods</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+    <li><a href="../../iso_3166_1/DisplayCountries/run.html">run</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
+
+    <li class="section-title inherited"><a href="../../iso_3166_1/DisplayCountries-class.html#operators">Operators</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
+
+
+
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    iso_3166_1
+      2.0.0
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="generator" content="made with love by dartdoc 5.0.0">
+  <meta name="description" content="iso_3166_1 API docs, for the Dart programming language.">
+  <title>iso_3166_1 - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href=""
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li class="self-crumb">iso_3166_1 package</li>
+  </ol>
+  <div class="self-name">iso_3166_1</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <!-- 
+This README describes the package. If you publish this package to pub.dev,
+this README's contents appear on the landing page for your package.
+
+For information about how to write a good package README, see the guide for
+[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
+
+For general information about developing packages, see the Dart guide for
+[creating packages](https://dart.dev/guides/libraries/create-library-packages)
+and the Flutter guide for
+[developing packages and plugins](https://flutter.dev/developing-packages). 
+-->
+<p>An implementation of ISO_3166_1 in a similar way to an enum, 
+group by id, name, alpha2 and alpha3. 
+It provides id, alpha2, alpha3, flag and prefix number info
+It is able to search a country its id,name, alpha2, alpha3, returns null
+otherwise. It provides multisearch as well.</p>
+<ul>
+<li>It has a library for creating a command-line tool to display country information</li>
+</ul>
+<h2 id="features">Features</h2>
+<ul>
+<li>It allows to get country information like id, name, alpha2, alpha3, international prefix number, flag emoji unicode</li>
+<li>It allows to create some CLI tools to display country information thanks to the DisplayCountries class by using CLI arguments</li>
+<li>It provides list_country tool that receive arguments passed by CLI to display countries</li>
+</ul>
+<h2 id="getting-started">Getting started</h2>
+<p>You can use this as a normal dependency in a Dart or Flutter application for listing or searching countries</p>
+<p>A command-line tool is provided for an easy use and pretty display in a terminal, it can be saved in a file as well.</p>
+<p>There are two methods to access this tool:</p>
+<ol>
+<li>If you are using this package as a dependency, in the app folder you could try this:
+''' dart run iso_361_1:list_countries --help ''''</li>
+<li>If you want to download or upgrade a package in your global_packages folder inside your pub cache directory:
+''' dart pub global activate iso_3166_1 '''
+''' dart pub global run iso_3166_1:list_countries --help'''
+or simply use the shorthand if your bin folder from pub cache is reachable by your path env variable
+''' list_countries --help '''</li>
+</ol>
+<h2 id="usage-as-a-dependency-library-package">Usage as a dependency (library package)</h2>
+<ul>
+<li><a href="#get-a-country-by-its-code">Get a country by its code</a></li>
+<li><a href="#get-a-country-by-its-alpha2">Get a country by its alpha2</a></li>
+<li><a href="#get-a-country-by-its-alpha3">Get a country by its alpha3</a></li>
+<li><a href="#get-a-country-by-its-id">Get a country by its id</a></li>
+<li><a href="#get-a-country-by-its-english-name">Get a country by its english name</a></li>
+<li><a href="#get-a-country-or-null-by-passing-whatever-you-like">Get a country or null by passing whatever you like</a></li>
+<li><a href="#get-a-list-of-several-countries">Get a list of several countries</a></li>
+</ul>
+<h3 id="get-a-country-by-its-id-code">Get a country by its id, code</h3>
+<pre class="language-dart"><code class="language-dart">import 'package:iso_3166_1/iso_3166_1.dart';
+
+print(EnumCountryCode.id724.code.asMap);
+
+</code></pre>
+<h3 id="get-a-country-by-its-alpha2">Get a country by its alpha2</h3>
+<pre class="language-dart"><code class="language-dart">import 'package:iso_3166_1/iso_3166_1.dart';
+
+print(EnumCountryAlpha2.ES.code.asMap);
+
+</code></pre>
+<h3 id="get-a-country-by-its-alpha3">Get a country by its alpha3</h3>
+<pre class="language-dart"><code class="language-dart">import 'package:iso_3166_1/iso_3166_1.dart';
+
+ print(EnumCountryAlphas3.ESP.code.asMap);
+
+</code></pre>
+<h3 id="get-a-country-by-its-english-name">Get a country by its english name</h3>
+<pre class="language-dart"><code class="language-dart">import 'package:iso_3166_1/iso_3166_1.dart';
+
+  print(EnumCountryName.spain.code.asMap);
+
+</code></pre>
+<h3 id="get-a-country-or-null-by-passing-whatever-you-like">Get a country or null by passing whatever you like</h3>
+<pre class="language-dart"><code class="language-dart">import 'package:iso_3166_1/iso_3166_1.dart';
+
+print(EnumCountryCodeExt.tryCountryCode('es')?.asMap);
+
+</code></pre>
+<h3 id="get-a-list-of-several-countries">Get a list of several countries</h3>
+<pre class="language-dart"><code class="language-dart">import 'package:iso_3166_1/iso_3166_1.dart';
+
+print(
+  EnumCountryCodeExt
+  .getEnumCountryCode(['es','de','uk','unknown'])
+  .map((e) =&gt; e.asMap)
+);
+
+</code></pre>
+<h2 id="usage-of-displaycountries-class">Usage of DisplayCountries class</h2>
+<p>This class is used for the list_countries tool.</p>
+<p>Examples are under example/lib.</p>
+<p>You can use this to extend the class or to create your own CLI tool.</p>
+<h2 id="usage-as-a-tool-under-bin-directory">Usage as a tool, under bin directory</h2>
+<p>The following is for using as a command-line tool, more examples under example/bin folder</p>
+<p>There are two ways to run the tool:</p>
+<ol>
+<li>
+<p>From a package that depends on this package and it is listed in .packages file</p>
+<pre class="language-console"><code class="language-console">   dart run iso_3166_1:list_countries [options/flags] [searched countries are separated by space]
+</code></pre>
+</li>
+<li>
+<p>To download and upgrade a package to the pub cache and create links to the tools</p>
+<pre class="language-console"><code class="language-console">   pub global activate iso_3166_1
+</code></pre>
+</li>
+</ol>
+<ul>
+<li>
+<p>Then you can choose between these to run the tool</p>
+<pre class="language-console"><code class="language-console">  pub global run list_countries
+  list_countries
+</code></pre>
+<h4 id="examples">EXAMPLES</h4>
+<p>It shows the help, options, allowed and default values</p>
+<pre class="language-console"><code class="language-console">    list_countries -h
+</code></pre>
+<p>It searchs, show and save to a file certian countries</p>
+<pre class="language-console"><code class="language-console">    list_countries -p -f myFile.txt italy esp pt 20 unknown
+</code></pre>
+</li>
+</ul>
+<pre class="language-dart"><code>
+## Additional information
+
+For issues or if you want to contact me click on github or publisher links
+</code></pre>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="iso_3166_1">
+  <span class="name"><a href="iso_3166_1/iso_3166_1-library.html">iso_3166_1</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+        </dl>
+      </section>
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li class="self-crumb">iso_3166_1 package</li>
+</ol>
+
+
+    <h5 class="hidden-xs"><span class="package-name">iso_3166_1</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="iso_3166_1/iso_3166_1-library.html">iso_3166_1</a></li>
+</ol>
+
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+
+</main>
+
+<footer>
+  <span class="no-break">
+    iso_3166_1
+      2.0.0
+  </span>
+
+  
+</footer>
+
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+

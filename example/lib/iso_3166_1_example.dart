@@ -2,19 +2,20 @@ import 'package:iso_3166_1/iso_3166_1.dart';
 
 void main() {
   // get a concrete country by its id code
-  print(CountryCodes.id724.toMap());
+  print(EnumCountryCode.id724.code.asMap);
 
   // get a concrete country by its alpha2 code
-  print(CountryCodes.alphas2.ES.toMap());
+  print(EnumCountryAlpha2.ES.code.asMap);
 
   // get a concrete country by its alpha3 code
-  print(CountryCodes.alphas3.ESP.toMap());
+  print(EnumCountryAlpha3.ESP.code.asMap);
 
   // get a concrete country by its engish name
-  print(CountryCodes.names.spain.toMap());
+  print(EnumCountryName.spain.code.asMap);
 
   //try to get a country from whatever id, return null if it does not exist
-  print(CountryCodes.tryCountryCode('es')?.toMap());
+  print(EnumCountryCodeExt.tryCountryCode('es')?.asMap);
 
-  print(CountryCodes.getCountryCodes(['es','de','uk','unknown']).map((e) => e.toMap()));
+  print(EnumCountryCodeExt.getCountryCodes(
+    ['es','de','uk','unknown']).map((e) => e.asMap));
 }

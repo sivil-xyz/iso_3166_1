@@ -8,7 +8,7 @@ void main() {
 
     const exactCountry = CountryCode.withEmptyValues(id: '004');
 
-    const expectedCountry = CountryCodes.id004;
+    var expectedCountry = EnumCountryCode.id004.code;
 
     setUp(() {
       // Additional setup goes here.
@@ -20,13 +20,13 @@ void main() {
     });
 
     test('tryCountryCode Function Test', () {
-      for(var c in CountryCodes.values) {
-        expect(c.id, CountryCodes.tryCountryCode(c.id)!.id);
-        expect(c.name, CountryCodes.tryCountryCode(c.id)!.name);
-        expect(c.alpha2, CountryCodes.tryCountryCode(c.id)!.alpha2);
-        expect(c.alpha3, CountryCodes.tryCountryCode(c.id)!.alpha3);
-        expect(c.prefix, CountryCodes.tryCountryCode(c.id)!.prefix);
-        expect(c.uFlag, CountryCodes.tryCountryCode(c.id)!.uFlag);
+      for(var c in EnumCountryCodeExt.codes) {
+        expect(c.id, EnumCountryCodeExt.tryCountryCode(c.id)!.id);
+        expect(c.officialName, EnumCountryCodeExt.tryCountryCode(c.id)!.officialName);
+        expect(c.alpha2, EnumCountryCodeExt.tryCountryCode(c.id)!.alpha2);
+        expect(c.alpha3, EnumCountryCodeExt.tryCountryCode(c.id)!.alpha3);
+        expect(c.prefix, EnumCountryCodeExt.tryCountryCode(c.id)!.prefix);
+        expect(c.uFlag, EnumCountryCodeExt.tryCountryCode(c.id)!.uFlag);
       }
       expect(oneCountry == exactCountry, false);
       expect(expectedCountry == exactCountry, true);

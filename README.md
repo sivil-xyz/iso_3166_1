@@ -34,8 +34,8 @@ There are two methods to access this tool:
 1) If you are using this package as a dependency, in the app folder you could try this:
   ''' dart run iso_361_1:list_countries --help ''''
 2) If you want to download or upgrade a package in your global_packages folder inside your pub cache directory:
-  ''' dart pub global activate iso_3611_1 '''
-  ''' dart pub global run iso_3611_1:list_countries --help'''
+  ''' dart pub global activate iso_3166_1 '''
+  ''' dart pub global run iso_3166_1:list_countries --help'''
   or simply use the shorthand if your bin folder from pub cache is reachable by your path env variable
   ''' list_countries --help '''
 
@@ -54,7 +54,7 @@ There are two methods to access this tool:
 ```dart
 import 'package:iso_3166_1/iso_3166_1.dart';
 
-print(CountryCodes.id724.toMap());
+print(EnumCountryCode.id724.code.asMap);
 
 ```
 
@@ -63,7 +63,7 @@ print(CountryCodes.id724.toMap());
 ```dart
 import 'package:iso_3166_1/iso_3166_1.dart';
 
-print(CountryCodes.alphas2.ES.toMap());
+print(EnumCountryAlpha2.ES.code.asMap);
 
 ```
 
@@ -72,7 +72,7 @@ print(CountryCodes.alphas2.ES.toMap());
 ```dart
 import 'package:iso_3166_1/iso_3166_1.dart';
 
- print(CountryCodes.alphas3.ESP.toMap());
+ print(EnumCountryAlphas3.ESP.code.asMap);
 
 ```
 
@@ -81,7 +81,7 @@ import 'package:iso_3166_1/iso_3166_1.dart';
 ```dart
 import 'package:iso_3166_1/iso_3166_1.dart';
 
-  print(CountryCodes.names.spain.toMap());
+  print(EnumCountryName.spain.code.asMap);
 
 ```
 
@@ -90,7 +90,7 @@ import 'package:iso_3166_1/iso_3166_1.dart';
 ```dart
 import 'package:iso_3166_1/iso_3166_1.dart';
 
-print(CountryCodes.tryCountryCode('es')?.toMap());
+print(EnumCountryCodeExt.tryCountryCode('es')?.asMap);
 
 ```
 
@@ -100,9 +100,9 @@ print(CountryCodes.tryCountryCode('es')?.toMap());
 import 'package:iso_3166_1/iso_3166_1.dart';
 
 print(
-  CountryCodes
-  .getCountryCodes(['es','de','uk','unknown'])
-  .map((e) => e.toMap())
+  EnumCountryCodeExt
+  .getEnumCountryCode(['es','de','uk','unknown'])
+  .map((e) => e.asMap)
 );
 
 ```
@@ -142,7 +142,7 @@ There are two ways to run the tool:
 
     It searchs, show and save to a file certian countries
       ```console
-        list_countries -p -f myFile.txt italy esp pt 20 unknown
+        list_countries -f myFile.txt italy esp pt 20 unknown
   ```
 
 ## Additional information

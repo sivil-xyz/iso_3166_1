@@ -38,9 +38,9 @@ void main() {
 
   // show only these fields or columns
   displayCountries.arguments.fields = [
-    DisplayCountriesArgsField.alpha2,
-    DisplayCountriesArgsField.alpha3,
-    DisplayCountriesArgsField.name, 
+    EnumDisplayCountriesArgsField.alpha2,
+    EnumDisplayCountriesArgsField.alpha3,
+    EnumDisplayCountriesArgsField.name, 
   ];
 
   // border and dividingline are removed
@@ -69,7 +69,7 @@ void main() {
   displayCountries.arguments.titleLowercase = true;
 
   // the type for displaying the data
-  displayCountries.arguments.type = DisplayCountriesArgsType.csv;
+  displayCountries.arguments.type = EnumDisplayCountriesArgsType.csv;
 
   // run according to the arguments we passed to the instance
   displayCountries.run();

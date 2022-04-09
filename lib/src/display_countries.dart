@@ -3,22 +3,40 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:args/args.dart';
 import 'package:iso_3166_1/iso_3166_1.dart';
-import 'package:iso_3166_1/src/country_code.dart';
 import 'package:pretty_json/pretty_json.dart';
 import 'package:tabular/tabular.dart';
 import 'package:csv/csv.dart';
 
-enum DisplayCountriesArgsField { id, name, alpha2, alpha3, prefix, flag }
-enum DisplayCountriesArgsOrder { asc, desc, ascending, descending }
-enum DisplayCountriesArgsType { csv, json, list, prettyJson, table }
+enum EnumDisplayCountriesArgsField { 
+  id, 
+  name, 
+  alpha2, 
+  alpha3, 
+  prefix, 
+  flag 
+}
+
+enum EnumDisplayCountriesArgsOrder { 
+  asc, 
+  desc, 
+  ascending, 
+  descending 
+}
+enum EnumDisplayCountriesArgsType { 
+  csv, 
+  json, 
+  list, 
+  prettyJson, 
+  table 
+}
 
 class DisplayCountriesArgs {  
-  static const defaultType = DisplayCountriesArgsType.table;
+  static const defaultType = EnumDisplayCountriesArgsType.table;
   static ArgParser? _parser;
 
   List<String> countries;
   int? dividingLine;
-  List<DisplayCountriesArgsField> fields;
+  List<EnumDisplayCountriesArgsField> fields;
   String? file;
   int? from;
   bool border;
@@ -26,18 +44,18 @@ class DisplayCountriesArgs {
   int? limit;
   bool lines;
   int linesPosition;
-  DisplayCountriesArgsOrder orderAfter;
-  DisplayCountriesArgsOrder orderBefore;
+  EnumDisplayCountriesArgsOrder orderAfter;
+  EnumDisplayCountriesArgsOrder orderBefore;
   bool printAll;
   bool title;
   bool titleLowercase;
   int? to;
-  DisplayCountriesArgsType type;
+  EnumDisplayCountriesArgsType type;
 
   DisplayCountriesArgs({
     this.countries = const [],
     this.dividingLine,
-    this.fields = DisplayCountriesArgsField.values, 
+    this.fields = EnumDisplayCountriesArgsField.values, 
     this.file, 
     this.from, 
     this.border = true, 
@@ -45,8 +63,8 @@ class DisplayCountriesArgs {
     this.limit, 
     this.lines = false, 
     this.linesPosition = 0,
-    this.orderAfter = DisplayCountriesArgsOrder.asc,
-    this.orderBefore = DisplayCountriesArgsOrder.asc,
+    this.orderAfter = EnumDisplayCountriesArgsOrder.asc,
+    this.orderBefore = EnumDisplayCountriesArgsOrder.asc,
     this.printAll = false, 
     this.title = true, 
     this.titleLowercase = false, 
@@ -56,53 +74,53 @@ class DisplayCountriesArgs {
     _initParser();
   }
 
-  static DisplayCountriesArgsType typeOf(String myType) {
-    var res = DisplayCountriesArgsType.table;
+  static EnumDisplayCountriesArgsType typeOf(String myType) {
+    var res = EnumDisplayCountriesArgsType.table;
     if(myType.toLowerCase() == 'csv') {
-      res = DisplayCountriesArgsType.csv;
+      res = EnumDisplayCountriesArgsType.csv;
     }
     else if(myType.toLowerCase() == 'json') {
-      res = DisplayCountriesArgsType.json;
+      res = EnumDisplayCountriesArgsType.json;
     }
     else if(myType.toLowerCase() == 'pretty_json') {
-      res = DisplayCountriesArgsType.prettyJson;
+      res = EnumDisplayCountriesArgsType.prettyJson;
     }
     else if(myType.toLowerCase() == 'list') {
-      res = DisplayCountriesArgsType.list;
+      res = EnumDisplayCountriesArgsType.list;
     }
     return res;
   }
 
-  static DisplayCountriesArgsField fieldOf(String myField) {
-    var res = DisplayCountriesArgsField.id;
+  static EnumDisplayCountriesArgsField fieldOf(String myField) {
+    var res = EnumDisplayCountriesArgsField.id;
     if(myField.toLowerCase() == 'name') {
-      res = DisplayCountriesArgsField.name;
+      res = EnumDisplayCountriesArgsField.name;
     }
     else if(myField.toLowerCase() == 'alpha2') {
-      res = DisplayCountriesArgsField.alpha2;
+      res = EnumDisplayCountriesArgsField.alpha2;
     }
     else if(myField.toLowerCase() == 'alpha3') {
-      res = DisplayCountriesArgsField.alpha3;
+      res = EnumDisplayCountriesArgsField.alpha3;
     }
     else if(myField.toLowerCase() == 'prefix') {
-      res = DisplayCountriesArgsField.prefix;
+      res = EnumDisplayCountriesArgsField.prefix;
     }
     else if(myField.toLowerCase() == 'flag') {
-      res = DisplayCountriesArgsField.flag;
+      res = EnumDisplayCountriesArgsField.flag;
     }
     return res;
   }
 
-  static DisplayCountriesArgsOrder orderOf(String myField) {
-    var res = DisplayCountriesArgsOrder.asc;
+  static EnumDisplayCountriesArgsOrder orderOf(String myField) {
+    var res = EnumDisplayCountriesArgsOrder.asc;
     if(myField.toLowerCase() == 'ascending') {
-      res = DisplayCountriesArgsOrder.ascending;
+      res = EnumDisplayCountriesArgsOrder.ascending;
     }
     else if(myField.toLowerCase() == 'desc') {
-      res = DisplayCountriesArgsOrder.desc;
+      res = EnumDisplayCountriesArgsOrder.desc;
     }
     else if(myField.toLowerCase() == 'descending') {
-      res = DisplayCountriesArgsOrder.descending;
+      res = EnumDisplayCountriesArgsOrder.descending;
     }
     return res;
   }
@@ -197,7 +215,7 @@ class DisplayCountriesArgs {
         'sort-before',
         defaultsTo: 'asc',
         help: 'sort before applying the filter',
-        allowed: DisplayCountriesArgsOrder.values.map(
+        allowed: EnumDisplayCountriesArgsOrder.values.map(
               (e) => e.toString().substring(e.toString().indexOf('.') + 1)),
       );
 
@@ -205,7 +223,7 @@ class DisplayCountriesArgs {
         'sort-after',
         defaultsTo: 'asc',
         help: 'sort after applying the filter',
-        allowed: DisplayCountriesArgsOrder.values.map(
+        allowed: EnumDisplayCountriesArgsOrder.values.map(
               (e) => e.toString().substring(e.toString().indexOf('.') + 1)),
       );
 
@@ -224,7 +242,7 @@ class DisplayCountriesArgs {
           .substring(DisplayCountriesArgs
             .defaultType.toString().indexOf('.') + 1),
         allowed: [
-          ...DisplayCountriesArgsType.values.map(
+          ...EnumDisplayCountriesArgsType.values.map(
               (e) => e.toString().substring(e.toString().indexOf('.') + 1)),
         ],
         help: 'The type of format output',
@@ -279,9 +297,9 @@ class DisplayCountriesArgs {
 
       _parser!.addMultiOption(
         'fields',
-        defaultsTo: DisplayCountriesArgsField.values.map((e) => e.toString().substring(e.toString().indexOf('.') + 1)),
+        defaultsTo: EnumDisplayCountriesArgsField.values.map((e) => e.toString().substring(e.toString().indexOf('.') + 1)),
         allowed: [
-          ...DisplayCountriesArgsField.values.map((e) => e.toString().substring(e.toString().indexOf('.') + 1)),
+          ...EnumDisplayCountriesArgsField.values.map((e) => e.toString().substring(e.toString().indexOf('.') + 1)),
         ],
         help: 'Fields (columns) to display in the output',
         valueHelp: 'field1,field2,...'
@@ -351,19 +369,19 @@ class DisplayCountries {
 
   List<CountryCode> get countryCodes {
     var cCodes = (arguments.countries.isNotEmpty)
-    ? CountryCodes.getCountryCodes(arguments.countries)
-    : CountryCodes.values;
+    ? EnumCountryCodeExt.getCountryCodes(arguments.countries)
+    : EnumCountryCodeExt.codes;
     print(arguments.orderAfter);
-    if(arguments.orderBefore == DisplayCountriesArgsOrder.desc || 
-        arguments.orderBefore == DisplayCountriesArgsOrder.descending) {
+    if(arguments.orderBefore == EnumDisplayCountriesArgsOrder.desc || 
+        arguments.orderBefore == EnumDisplayCountriesArgsOrder.descending) {
       cCodes = cCodes.reversed.toList();
     }
     cCodes =  cCodes.getRange(
         (arguments.from != null && arguments.from! > 0 && arguments.from! <= cCodes.length)? arguments.from!-1 : 0, 
         (arguments.to != null && arguments.to! <= cCodes.length && arguments.to! > 0)? arguments.to! : cCodes.length)
         .take(arguments.limit ?? cCodes.length).toList();
-    if(arguments.orderAfter == DisplayCountriesArgsOrder.desc || 
-        arguments.orderAfter == DisplayCountriesArgsOrder.descending) {
+    if(arguments.orderAfter == EnumDisplayCountriesArgsOrder.desc || 
+        arguments.orderAfter == EnumDisplayCountriesArgsOrder.descending) {
       cCodes = cCodes.reversed.toList();
     }
     return cCodes;
@@ -385,7 +403,7 @@ class DisplayCountries {
           fields.add(c.id);
         }
         if(field.contains('name')) {
-          fields.add(c.name);
+          fields.add(c.officialName);
         }
         if(field.contains('alpha2')) {
           fields.add(c.alpha2);
@@ -473,7 +491,7 @@ class DisplayCountries {
     }
     String output = 'An error has ocurred';
 
-    if(arguments.type == DisplayCountriesArgsType.table) {
+    if(arguments.type == EnumDisplayCountriesArgsType.table) {
       
       var rowDividers = [
         if(arguments.title) 1, 
@@ -492,16 +510,16 @@ class DisplayCountries {
         format: format,
       );
     }
-    else if(arguments.type == DisplayCountriesArgsType.json){
+    else if(arguments.type == EnumDisplayCountriesArgsType.json){
       output = json.encode(countries);
     }
-    else if(arguments.type == DisplayCountriesArgsType.prettyJson) {
+    else if(arguments.type == EnumDisplayCountriesArgsType.prettyJson) {
       output = prettyJson(countries);
     }
-    else if(arguments.type == DisplayCountriesArgsType.csv){
+    else if(arguments.type == EnumDisplayCountriesArgsType.csv){
       output = const ListToCsvConverter().convert(countries);
     }
-    else if(arguments.type == DisplayCountriesArgsType.list){
+    else if(arguments.type == EnumDisplayCountriesArgsType.list){
       output = '';
       for(var c in countries) {
         output += '${c.toString()}\n';
@@ -525,7 +543,7 @@ class DisplayCountries {
     if(arguments.countries.isNotEmpty) {
       for(var cc in arguments.countries) {
         var error = '[${cc.toUpperCase()}] could not be found';
-        if(CountryCodes.tryCountryCode(cc) == null) {
+        if(EnumCountryCodeExt.tryCountryCode(cc) == null) {
           print(error);
         }
       }     

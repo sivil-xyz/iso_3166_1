@@ -3,7 +3,7 @@ description: >-
   An implementation of ISO_3166_1 in a similar way to an enum, 
   group by id, name, alpha2 and alpha3. 
   It provides id, alpha2, alpha3, flag and prefix number info
-version: 1.0.0
+version: 2.0.0
 # repository: https://www.example.com
 
 environment:

@@ -2,7 +2,7 @@ class CountryCode {
   final String alpha2;
   final String alpha3;
   final String id;
-  final String name;
+  final String officialName;
   final String uFlag;
   final String prefix;
 
@@ -10,7 +10,7 @@ class CountryCode {
     required this.id,
     required this.alpha2,
     required this.alpha3,
-    required this.name,
+    required this.officialName,
     required this.uFlag,
     required this.prefix,
   });
@@ -19,7 +19,7 @@ class CountryCode {
     this.id = '',
     this.alpha2 = '',
     this.alpha3 = '',
-    this.name = '',
+    this.officialName = '',
     this.uFlag = '',
     this.prefix = '',
   });
@@ -29,7 +29,7 @@ class CountryCode {
     alpha2: map['alpha2'],
     alpha3: map['alpha3'],
     id: map['id'],
-    name: map['name'],
+    officialName: map['officialName'],
     prefix: map['prefix'],
     uFlag: map['uFlag'],
   );
@@ -38,7 +38,7 @@ class CountryCode {
     String? id, 
     String? alpha2, 
     String? alpha3,
-    String? name,
+    String? officialName,
     String? prefix,
     String? uFlag,
   }) : 
@@ -46,7 +46,7 @@ class CountryCode {
     id: id ?? instance.id,
     alpha2: alpha2 ?? instance.alpha2,
     alpha3: alpha3 ?? instance.alpha3,
-    name: name ?? instance.name,
+    officialName: officialName ?? instance.officialName,
     prefix: prefix ?? instance.prefix,
     uFlag: uFlag ?? instance.uFlag,
   );
@@ -55,7 +55,7 @@ class CountryCode {
     String? id, 
     String? alpha2, 
     String? alpha3,
-    String? name,
+    String? officialName,
     String? prefix,
     String? uFlag,
   }) =>
@@ -63,7 +63,7 @@ class CountryCode {
       id: id,
       alpha2: alpha2,
       alpha3: alpha3,
-      name: name,
+      officialName: officialName,
       prefix: prefix,
       uFlag: uFlag,
     );
@@ -75,19 +75,18 @@ class CountryCode {
     return id == o.id;
   }
 
-  String get flagUnicode => uFlag.runes.map((e) => '\\u{${e.toRadixString(16)}}').join('');
+  String get flagUnicode => uFlag.runes
+    .map((e) => '\\u{${e.toRadixString(16)}}').join('');
 
-  Map<String, dynamic> toMap() {
-    return {
+  Map<String, dynamic> get asMap => {
       'alpha2' : alpha2,
       'alpha3' : alpha3,
       'id' : id,
-      'name' : name,
+      'officialName' : officialName,
       'prefix' : prefix,
       'uFlag' : uFlag,
     };
-  }
-
+  
   @override
   int get hashCode => id.hashCode;
 

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the byAlpha2 method from the EnumCountryCodeExt extension, for the Dart programming language.">
+  <title>byAlpha2 method - EnumCountryCodeExt extension - iso_3166_1 library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">iso_3166_1</a></li>
+    <li><a href="../../iso_3166_1/iso_3166_1-library.html">iso_3166_1</a></li>
+    <li><a href="../../iso_3166_1/EnumCountryCodeExt.html">EnumCountryCodeExt</a></li>
+    <li class="self-crumb">byAlpha2 method</li>
+  </ol>
+  <div class="self-name">byAlpha2</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-method">byAlpha2</span> method 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+
+<span class="returntype"><a href="../../iso_3166_1/EnumCountryCode.html">EnumCountryCode</a></span>
+<span class="name ">byAlpha2</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="byAlpha2-param-alpha2"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">alpha2</span></span></li>
+</ol>)
+
+      
+
+    </section>
+    
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">static EnumCountryCode byAlpha2(String alpha2) {
+  return EnumCountryCode.values
+    .firstWhere((element) =&gt;
+      element.code.alpha2 == alpha2);
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../../index.html">iso_3166_1</a></li>
+  <li><a href="../../iso_3166_1/iso_3166_1-library.html">iso_3166_1</a></li>
+  <li><a href="../../iso_3166_1/EnumCountryCodeExt.html">EnumCountryCodeExt</a></li>
+  <li class="self-crumb">byAlpha2 method</li>
+</ol>
+
+
+    <h5>EnumCountryCodeExt extension</h5>
+    <ol>
+
+
+
+
+    <li class="section-title"> <a href="../../iso_3166_1/EnumCountryCodeExt.html#instance-properties">Properties</a>
+    </li>
+    <li><a href="../../iso_3166_1/EnumCountryCodeExt/code.html">code</a></li>
+
+
+    <li class="section-title"><a href="../../iso_3166_1/EnumCountryCodeExt.html#operators">Operators</a></li>
+    <li><a href="../../iso_3166_1/EnumCountryCodeExt/operator_get.html">operator []</a></li>
+
+    <li class="section-title"><a href="../../iso_3166_1/EnumCountryCodeExt.html#static-properties">Static properties</a></li>
+    <li><a href="../../iso_3166_1/EnumCountryCodeExt/codes.html">codes</a></li>
+
+    <li class="section-title"><a href="../../iso_3166_1/EnumCountryCodeExt.html#static-methods">Static methods</a></li>
+    <li><a href="../../iso_3166_1/EnumCountryCodeExt/byAlpha2.html">byAlpha2</a></li>
+    <li><a href="../../iso_3166_1/EnumCountryCodeExt/byAlpha2OrNull.html">byAlpha2OrNull</a></li>
+    <li><a href="../../iso_3166_1/EnumCountryCodeExt/byAlpha3.html">byAlpha3</a></li>
+    <li><a href="../../iso_3166_1/EnumCountryCodeExt/byAlpha3OrNull.html">byAlpha3OrNull</a></li>
+    <li><a href="../../iso_3166_1/EnumCountryCodeExt/byId.html">byId</a></li>
+    <li><a href="../../iso_3166_1/EnumCountryCodeExt/byIdOrNull.html">byIdOrNull</a></li>
+    <li><a href="../../iso_3166_1/EnumCountryCodeExt/getCountryCodes.html">getCountryCodes</a></li>
+    <li><a href="../../iso_3166_1/EnumCountryCodeExt/tryCountryCode.html">tryCountryCode</a></li>
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    iso_3166_1
+      2.0.0
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+
