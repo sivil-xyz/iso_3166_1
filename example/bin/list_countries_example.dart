@@ -1,5 +1,3 @@
-import 'package:iso_3166_1/iso_3166_1.dart';
-
 // from a package that depends on this package and contains .packages
 // dart run iso_3166_1:list_countries [options/flags] [searched countries separated by space]
 

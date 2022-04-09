@@ -1,5 +1,4 @@
 import 'package:iso_3166_1/iso_3166_1.dart';
-import 'package:iso_3166_1/src/country_code.dart';
 import 'package:test/test.dart';
 
 void main() {
