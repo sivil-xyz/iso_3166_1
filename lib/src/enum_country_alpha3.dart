@@ -512,35 +512,38 @@ enum EnumCountryAlpha3 {
 extension EnumCountryAlpha3Ext on EnumCountryAlpha3 {
   static EnumCountryAlpha3 byId(String id) {
     return EnumCountryAlpha3.values
-      .firstWhere((element) => element.code.id == id);
+      .firstWhere((element) => 
+        element.code.id.toLowerCase() == id.toLowerCase());
   }
 
   static EnumCountryAlpha3 byAlpha2(String alpha2) {
     return EnumCountryAlpha3.values
-      .firstWhere((element) => element.code.alpha2 == alpha2);
+      .firstWhere((element) => 
+        element.code.alpha2.toLowerCase() == alpha2.toLowerCase());
   }
 
   static EnumCountryAlpha3 byAlpha3(String alpha3) {
     return EnumCountryAlpha3.values
-      .firstWhere((element) => element.code.alpha3 == alpha3);
+      .firstWhere((element) => 
+        element.code.alpha3.toLowerCase() == alpha3.toLowerCase());
   }
 
   static EnumCountryAlpha3? byIdOrNull(String id) {
     return EnumCountryAlpha3.values
       .firstWhereOrNull((element) => 
-        element.code.id == id);
+        element.code.id.toLowerCase() == id.toLowerCase());
   }
 
   static EnumCountryAlpha3? byAlpha2OrNull(String alpha2) {
     return EnumCountryAlpha3.values
       .firstWhereOrNull((element) => 
-        element.code.alpha2 == alpha2);
+        element.code.alpha2.toLowerCase() == alpha2.toLowerCase());
   }
 
   static EnumCountryAlpha3? byAlpha3OrNull(String alpha3) {
     return EnumCountryAlpha3.values
       .firstWhereOrNull((element) => 
-        element.code.alpha3 == alpha3);
+        element.code.alpha3.toLowerCase() == alpha3.toLowerCase());
   }
 
   CountryCode get code {

@@ -259,35 +259,38 @@ enum EnumCountryName {
 extension EnumCountryNameExt on EnumCountryName {
   static EnumCountryName byId(String id) {
     return EnumCountryName.values
-      .firstWhere((element) => element.code.id == id);
+      .firstWhere((element) => 
+        element.code.id.toLowerCase() == id.toLowerCase());
   }
 
   static EnumCountryName byAlpha2(String alpha2) {
     return EnumCountryName.values
-      .firstWhere((element) => element.code.alpha2 == alpha2);
+      .firstWhere((element) => 
+        element.code.alpha2.toLowerCase() == alpha2.toLowerCase());
   }
 
   static EnumCountryName byAlpha3(String alpha3) {
     return EnumCountryName.values
-      .firstWhere((element) => element.code.alpha3 == alpha3);
+      .firstWhere((element) => 
+        element.code.alpha3.toLowerCase() == alpha3.toLowerCase());
   }
 
   static EnumCountryName? byIdOrNull(String id) {
     return EnumCountryName.values
       .firstWhereOrNull((element) => 
-        element.code.id == id);
+        element.code.id.toLowerCase() == id.toLowerCase());
   }
 
   static EnumCountryName? byAlpha2OrNull(String alpha2) {
     return EnumCountryName.values
       .firstWhereOrNull((element) => 
-        element.code.alpha2 == alpha2);
+        element.code.alpha2.toLowerCase() == alpha2.toLowerCase());
   }
 
   static EnumCountryName? byAlpha3OrNull(String alpha3) {
     return EnumCountryName.values
       .firstWhereOrNull((element) => 
-        element.code.alpha3 == alpha3);
+        element.code.alpha3.toLowerCase() == alpha3.toLowerCase());
   }
 
   CountryCode get code {

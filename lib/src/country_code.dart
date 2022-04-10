@@ -72,7 +72,7 @@ class CountryCode {
   @override
   bool operator ==(other) {
     var o = other as CountryCode;
-    return id == o.id;
+    return id.toLowerCase() == o.id.toLowerCase();
   }
 
   String get flagUnicode => uFlag.runes

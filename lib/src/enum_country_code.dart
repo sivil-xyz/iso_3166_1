@@ -585,37 +585,37 @@ extension EnumCountryCodeExt on EnumCountryCode {
   static EnumCountryCode byId(String id) {
     return EnumCountryCode.values
       .firstWhere((element) => 
-        element.code.id == id);
+        element.code.id.toLowerCase() == id.toLowerCase());
   }
 
   static EnumCountryCode byAlpha2(String alpha2) {
     return EnumCountryCode.values
       .firstWhere((element) => 
-        element.code.alpha2 == alpha2);
+        element.code.alpha2.toLowerCase() == alpha2.toLowerCase());
   }
 
   static EnumCountryCode byAlpha3(String alpha3) {
     return EnumCountryCode.values
       .firstWhere((element) => 
-        element.code.alpha3 == alpha3);
+        element.code.alpha3.toLowerCase() == alpha3.toLowerCase());
   }
 
   static EnumCountryCode? byIdOrNull(String id) {
     return EnumCountryCode.values
       .firstWhereOrNull((element) => 
-        element.code.id == id);
+        element.code.id.toLowerCase() == id.toLowerCase());
   }
 
   static EnumCountryCode? byAlpha2OrNull(String alpha2) {
     return EnumCountryCode.values
       .firstWhereOrNull((element) => 
-        element.code.alpha2 == alpha2);
+        element.code.alpha2.toLowerCase() == alpha2.toLowerCase());
   }
 
   static EnumCountryCode? byAlpha3OrNull(String alpha3) {
     return EnumCountryCode.values
       .firstWhereOrNull((element) => 
-        element.code.alpha3 == alpha3);
+        element.code.alpha3.toLowerCase() == alpha3.toLowerCase());
   }
 
   static List<CountryCode> codes = EnumCountryCode.values
