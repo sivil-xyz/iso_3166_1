@@ -111,11 +111,7 @@ enum EnumLanguage {
     welsh,
     xhosa,
     yoruba,
-    zulu,
-}
-
-extension EnumLangsExt on EnumLanguage {
-  // String get text => describeEnum(this);
+    zulu;
 
   Map<EnumCountryName, CountryCode> get countries {
     switch(this) {
@@ -342,7 +338,7 @@ extension EnumLangsExt on EnumLanguage {
         };
       case EnumLanguage.esperanto: 
         return Map.fromIterables(
-          EnumCountryName.values, EnumCountryCodeExt.codes
+          EnumCountryName.values, EnumCountryCode.codes
         );
       case EnumLanguage.estonian: 
         return {
@@ -971,5 +967,5 @@ extension EnumLangsExt on EnumLanguage {
           EnumCountryName.southAfrica : EnumCountryName.southAfrica.code,
         };
     }
-  }
+  } 
 }

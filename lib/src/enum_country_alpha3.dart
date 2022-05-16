@@ -506,10 +506,8 @@ enum EnumCountryAlpha3 {
   YEM,
   ZAF,
   ZMB,
-  ZWE,
-}
+  ZWE;
 
-extension EnumCountryAlpha3Ext on EnumCountryAlpha3 {
   static EnumCountryAlpha3 byId(String id) {
     return EnumCountryAlpha3.values
       .firstWhere((element) => 

@@ -19,13 +19,13 @@ void main() {
     });
 
     test('tryCountryCode Function Test', () {
-      for(var c in EnumCountryCodeExt.codes) {
-        expect(c.id, EnumCountryCodeExt.tryCountryCode(c.id)!.id);
-        expect(c.officialName, EnumCountryCodeExt.tryCountryCode(c.id)!.officialName);
-        expect(c.alpha2, EnumCountryCodeExt.tryCountryCode(c.id)!.alpha2);
-        expect(c.alpha3, EnumCountryCodeExt.tryCountryCode(c.id)!.alpha3);
-        expect(c.prefix, EnumCountryCodeExt.tryCountryCode(c.id)!.prefix);
-        expect(c.uFlag, EnumCountryCodeExt.tryCountryCode(c.id)!.uFlag);
+      for(var c in EnumCountryCode.codes) {
+        expect(c.id, EnumCountryCode.tryCountryCode(c.id)!.id);
+        expect(c.officialName, EnumCountryCode.tryCountryCode(c.id)!.officialName);
+        expect(c.alpha2, EnumCountryCode.tryCountryCode(c.id)!.alpha2);
+        expect(c.alpha3, EnumCountryCode.tryCountryCode(c.id)!.alpha3);
+        expect(c.prefix, EnumCountryCode.tryCountryCode(c.id)!.prefix);
+        expect(c.uFlag, EnumCountryCode.tryCountryCode(c.id)!.uFlag);
       }
       expect(oneCountry == exactCountry, false);
       expect(expectedCountry == exactCountry, true);

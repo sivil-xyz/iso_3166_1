@@ -90,7 +90,7 @@ import 'package:iso_3166_1/iso_3166_1.dart';
 ```dart
 import 'package:iso_3166_1/iso_3166_1.dart';
 
-print(EnumCountryCodeExt.tryCountryCode('es')?.asMap);
+print(EnumCountryCode.tryCountryCode('es')?.asMap);
 
 ```
 

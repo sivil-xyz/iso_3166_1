@@ -14,8 +14,8 @@ void main() {
   print(EnumCountryName.spain.code.asMap);
 
   //try to get a country from whatever id, return null if it does not exist
-  print(EnumCountryCodeExt.tryCountryCode('es')?.asMap);
+  print(EnumCountryCode.tryCountryCode('es')?.asMap);
 
-  print(EnumCountryCodeExt.getCountryCodes(
+  print(EnumCountryCode.getCountryCodes(
     ['es','de','uk','unknown']).map((e) => e.asMap));
 }

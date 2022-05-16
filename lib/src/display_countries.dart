@@ -369,8 +369,8 @@ class DisplayCountries {
 
   List<CountryCode> get countryCodes {
     var cCodes = (arguments.countries.isNotEmpty)
-    ? EnumCountryCodeExt.getCountryCodes(arguments.countries)
-    : EnumCountryCodeExt.codes;
+    ? EnumCountryCode.getCountryCodes(arguments.countries)
+    : EnumCountryCode.codes;
     print(arguments.orderAfter);
     if(arguments.orderBefore == EnumDisplayCountriesArgsOrder.desc || 
         arguments.orderBefore == EnumDisplayCountriesArgsOrder.descending) {
@@ -543,7 +543,7 @@ class DisplayCountries {
     if(arguments.countries.isNotEmpty) {
       for(var cc in arguments.countries) {
         var error = '[${cc.toUpperCase()}] could not be found';
-        if(EnumCountryCodeExt.tryCountryCode(cc) == null) {
+        if(EnumCountryCode.tryCountryCode(cc) == null) {
           print(error);
         }
       }     

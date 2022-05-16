@@ -509,10 +509,8 @@ enum EnumCountryAlpha2 {
   YT,
   ZA,
   ZM,
-  ZW,
-}
+  ZW;
 
-extension EnumCountryAlpha2Ext on EnumCountryAlpha2 {
   static EnumCountryAlpha2 byId(String id) {
     return EnumCountryAlpha2.values
       .firstWhere((element) => 
