@@ -2806,49 +2806,43 @@ id660(
     }
     return countryCode;
   }
-operator [](String key) {
-    var cc = tryCountryCode(key);
-    if(cc != null) {
-      return cc;
+
+  operator [](String key) => tryCountryCode(key);
+
+  static EnumCountryCode byId(String id) {
+      return EnumCountryCode.values
+        .firstWhere((element) => 
+          element.code.id.toLowerCase() == id.toLowerCase());
     }
-    else {
-      throw NullThrownError();
+  static EnumCountryCode byAlpha2(String alpha2) {
+      return EnumCountryCode.values
+        .firstWhere((element) => 
+          element.code.alpha2.toLowerCase() == alpha2.toLowerCase());
     }
-  }
-static EnumCountryCode byId(String id) {
-    return EnumCountryCode.values
-      .firstWhere((element) => 
-        element.code.id.toLowerCase() == id.toLowerCase());
-  }
-static EnumCountryCode byAlpha2(String alpha2) {
-    return EnumCountryCode.values
-      .firstWhere((element) => 
-        element.code.alpha2.toLowerCase() == alpha2.toLowerCase());
-  }
-static EnumCountryCode byAlpha3(String alpha3) {
-    return EnumCountryCode.values
-      .firstWhere((element) => 
-        element.code.alpha3.toLowerCase() == alpha3.toLowerCase());
-  }
-static EnumCountryCode? byIdOrNull(String id) {
-    return EnumCountryCode.values
-      .firstWhereOrNull((element) => 
-        element.code.id.toLowerCase() == id.toLowerCase());
-  }
-static EnumCountryCode? byAlpha2OrNull(String alpha2) {
-    return EnumCountryCode.values
-      .firstWhereOrNull((element) => 
-        element.code.alpha2.toLowerCase() == alpha2.toLowerCase());
-  }
-static EnumCountryCode? byAlpha3OrNull(String alpha3) {
-    return EnumCountryCode.values
-      .firstWhereOrNull((element) => 
-        element.code.alpha3.toLowerCase() == alpha3.toLowerCase());
-  }
-static List<CountryCode> codes = EnumCountryCode.values
-    .map((e) => e.code).toList();
-  final CountryCode code;
-  const EnumCountryCode(this.code);
+  static EnumCountryCode byAlpha3(String alpha3) {
+      return EnumCountryCode.values
+        .firstWhere((element) => 
+          element.code.alpha3.toLowerCase() == alpha3.toLowerCase());
+    }
+  static EnumCountryCode? byIdOrNull(String id) {
+      return EnumCountryCode.values
+        .firstWhereOrNull((element) => 
+          element.code.id.toLowerCase() == id.toLowerCase());
+    }
+  static EnumCountryCode? byAlpha2OrNull(String alpha2) {
+      return EnumCountryCode.values
+        .firstWhereOrNull((element) => 
+          element.code.alpha2.toLowerCase() == alpha2.toLowerCase());
+    }
+  static EnumCountryCode? byAlpha3OrNull(String alpha3) {
+      return EnumCountryCode.values
+        .firstWhereOrNull((element) => 
+          element.code.alpha3.toLowerCase() == alpha3.toLowerCase());
+    }
+  static List<CountryCode> codes = EnumCountryCode.values
+      .map((e) => e.code).toList();
+    final CountryCode code;
+    const EnumCountryCode(this.code);
 }
 
 
